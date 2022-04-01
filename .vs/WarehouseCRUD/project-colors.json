@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "42cb723b-071c-4a16-9b6f-76f758f0988e": {
+      "ProjectGuid": "42cb723b-071c-4a16-9b6f-76f758f0988e",
+      "DisplayName": "WarehouseCRUD",
+      "ColorIndex": 0
+    }
+  },
+  "NextColorIndex": 1
+}
