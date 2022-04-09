@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31912.275
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarehouseCRUD", "WarehouseCRUD\WarehouseCRUD.csproj", "{42CB723B-071C-4A16-9B6F-76F758F0988E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WarehouseCRUD.Storage", "WarehouseCRUD\WarehouseCRUD.Storage.csproj", "{42CB723B-071C-4A16-9B6F-76F758F0988E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarehouseCRUD.Storage.Tests", "Storage.Tests\WarehouseCRUD.Storage.Tests.csproj", "{943DA694-4D1E-4971-AD85-0D83059064E4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{42CB723B-071C-4A16-9B6F-76F758F0988E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{42CB723B-071C-4A16-9B6F-76F758F0988E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{42CB723B-071C-4A16-9B6F-76F758F0988E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{943DA694-4D1E-4971-AD85-0D83059064E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{943DA694-4D1E-4971-AD85-0D83059064E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{943DA694-4D1E-4971-AD85-0D83059064E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{943DA694-4D1E-4971-AD85-0D83059064E4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
