@@ -6,13 +6,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WarehouseCRUD.Pages
+namespace WarehouseCRUD.Storage.Pages
 {
-    public class PrivacyModel : PageModel
+    public class InfoModel : PageModel
     {
-        private readonly ILogger<PrivacyModel> _logger;
+        private readonly ILogger<InfoModel> _logger;
 
-        public PrivacyModel(ILogger<PrivacyModel> logger)
+        public InfoModel(ILogger<InfoModel> logger)
         {
             _logger = logger;
         }
