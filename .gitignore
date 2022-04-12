@@ -73,3 +73,6 @@ _[Ss]cripts
 *.nupkg
 *.ncrunchsolution
 *.dot[Cc]over
+.vs/WarehouseCRUD/DesignTimeBuild/.dtbcache.v2
+.vs/WarehouseCRUD/project-colors.json
+.vs/WarehouseCRUD/v17/.futdcache.v1
