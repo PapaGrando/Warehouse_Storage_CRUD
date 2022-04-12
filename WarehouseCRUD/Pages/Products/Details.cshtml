@@ -1,0 +1,57 @@
+﻿@page
+@model WarehouseCRUD.Storage.Pages.Products.DetailsModel
+
+@{
+    ViewData["Title"] = Model.Product.Name;
+}
+
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2>Информация</h2>
+        </div>
+    </div>
+    <div class="row pt-4">
+        <div>
+            <h4>@Html.DisplayFor(model => model.Product.Name)</h4>
+        </div>
+        <div>
+            <img id="productImage" src="@Model.Product.ImageUrl" class="prodImg" width="520" />
+        </div>
+    </div>
+</div>
+<hr />
+
+<div>
+    <dl>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Product.Weight)
+        </dt>
+        <dd class="col-sm-15">
+            @Html.DisplayFor(model => model.Product.Weight)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Product.Length)
+        </dt>
+        <dd class="col-sm-15">
+            @Html.DisplayFor(model => model.Product.Length)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Product.Width)
+        </dt>
+        <dd class="col-sm-15">
+            @Html.DisplayFor(model => model.Product.Width)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Product.Height)
+        </dt>
+        <dd class="col-sm-15">
+            @Html.DisplayFor(model => model.Product.Height)
+        </dd>
+    </dl>
+</div>
+<hr/>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.Product.Id" class="btn btn-warning">Редактировать</a> 
+    <a asp-page="./Index" class="btn btn-secondary">Назад</a>
+</div>
