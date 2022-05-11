@@ -4,23 +4,23 @@
 
 namespace WarehouseCRUD.Storage.Migrations
 {
-    public partial class prodmodelUpdateaddPrice : Migration
+    public partial class cellEdited : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<decimal>(
-                name: "Price",
-                table: "Products",
-                type: "numeric",
-                nullable: false,
-                defaultValue: 0m);
+            migrationBuilder.AddColumn<string>(
+                name: "Name",
+                table: "Cells",
+                type: "character varying(10)",
+                maxLength: 10,
+                nullable: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Price",
-                table: "Products");
+                name: "Name",
+                table: "Cells");
         }
     }
 }
