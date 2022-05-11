@@ -6,9 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using WarehouseCRUD.Storage.DataContext;
-using WarehouseCRUD.Storage.Models;
+using WarehouseCRUD.Storage.Models.Storage;
 
-namespace WarehouseCRUD.Storage.Pages.Products
+namespace WarehouseCRUD.Storage.Pages.Storage.CellTypes
 {
     public class DetailsModel : PageModel
     {
@@ -19,7 +19,7 @@ namespace WarehouseCRUD.Storage.Pages.Products
             _context = context;
         }
 
-        public Product Product { get; set; }
+        public CellType CellType { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -28,10 +28,9 @@ namespace WarehouseCRUD.Storage.Pages.Products
                 return NotFound();
             }
 
-            Product = await _context.Products.Include(p => p.ProductCategory).
-                FirstOrDefaultAsync(m => m.Id == id);
+            CellType = await _context.CellTypes.FirstOrDefaultAsync(m => m.Id == id);
 
-            if (Product == null)
+            if (CellType == null)
             {
                 return NotFound();
             }

@@ -1,0 +1,21 @@
+﻿@using WarehouseCRUD.Storage.Models
+@model ProductCategory
+
+<form id="create-form" method="post" asp-page="Index" asp-route-id="@Model.Id"
+      asp-page-handler="CreateOrEdit" onsubmit="return jQueryModalPost(this)">
+    <div class="form-group row align-items-center">
+        <label class="col-md-3 col-form-label">@Html.DisplayNameFor(x => x.Name)</label>
+        <div class="col-md-6">
+            <input type="text" autocomplete="off" asp-for="Name" name="Name" class="form-control">
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Отменить</button>
+        <button type="submit" class="btn btn-success save-button">Сохранить</button>
+    </div>
+</form>
+
+<script type="text/javascript" language=javascript>
+    $.validator.unobtrusive.parse(document);
+</script>

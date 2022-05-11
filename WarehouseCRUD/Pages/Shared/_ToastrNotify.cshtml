@@ -1,0 +1,19 @@
+﻿@using WarehouseCRUD.Storage.Models.Helpers
+@if (TempData[ToastrHelper.SuccessTD] != null)
+{
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/toastr.min.js"></script>
+    <script type="text/javascript">
+        t.success('@TempData["success"]')
+    </script>
+}
+
+@if (TempData[ToastrHelper.ErrorTD] != null)
+{
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/toastr.min.js"></script>
+    <script type="text/javascript">
+        t.error('@TempData["error"]')
+    </script>
+}
+

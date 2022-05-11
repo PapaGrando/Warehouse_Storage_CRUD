@@ -6,9 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using WarehouseCRUD.Storage.DataContext;
-using WarehouseCRUD.Storage.Models;
+using WarehouseCRUD.Storage.Models.Storage;
 
-namespace WarehouseCRUD.Storage.Pages.Products
+namespace WarehouseCRUD.Storage.Pages.Storage.CellTypes
 {
     public class DeleteModel : PageModel
     {
@@ -20,7 +20,7 @@ namespace WarehouseCRUD.Storage.Pages.Products
         }
 
         [BindProperty]
-        public Product Product { get; set; }
+        public CellType CellType { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -29,9 +29,9 @@ namespace WarehouseCRUD.Storage.Pages.Products
                 return NotFound();
             }
 
-            Product = await _context.Products.FirstOrDefaultAsync(m => m.Id == id);
+            CellType = await _context.CellTypes.FirstOrDefaultAsync(m => m.Id == id);
 
-            if (Product == null)
+            if (CellType == null)
             {
                 return NotFound();
             }
@@ -45,13 +45,12 @@ namespace WarehouseCRUD.Storage.Pages.Products
                 return NotFound();
             }
 
-            Product = await _context.Products.FindAsync(id);
+            CellType = await _context.CellTypes.FindAsync(id);
 
-            if (Product != null)
+            if (CellType != null)
             {
-                _context.Products.Remove(Product);
+                _context.CellTypes.Remove(CellType);
                 await _context.SaveChangesAsync();
-                TempData["success"] = $"Товарная позиция удалена - {Product.Name}";
             }
 
             return RedirectToPage("./Index");

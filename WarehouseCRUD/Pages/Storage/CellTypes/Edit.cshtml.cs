@@ -7,9 +7,9 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WarehouseCRUD.Storage.DataContext;
-using WarehouseCRUD.Storage.Models;
+using WarehouseCRUD.Storage.Models.Storage;
 
-namespace WarehouseCRUD.Storage.Pages.Products
+namespace WarehouseCRUD.Storage.Pages.Storage.CellTypes
 {
     public class EditModel : PageModel
     {
@@ -21,7 +21,7 @@ namespace WarehouseCRUD.Storage.Pages.Products
         }
 
         [BindProperty]
-        public Product Product { get; set; }
+        public CellType CellType { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -30,14 +30,12 @@ namespace WarehouseCRUD.Storage.Pages.Products
                 return NotFound();
             }
 
-            Product = await _context.Products
-                .Include(p => p.ProductCategory).FirstOrDefaultAsync(m => m.Id == id);
+            CellType = await _context.CellTypes.FirstOrDefaultAsync(m => m.Id == id);
 
-            if (Product == null)
+            if (CellType == null)
             {
                 return NotFound();
             }
-           ViewData["ProductCategoryId"] = new SelectList(_context.ProductCategories, "Id", "Name");
             return Page();
         }
 
@@ -50,7 +48,7 @@ namespace WarehouseCRUD.Storage.Pages.Products
                 return Page();
             }
 
-            _context.Attach(Product).State = EntityState.Modified;
+            _context.Attach(CellType).State = EntityState.Modified;
 
             try
             {
@@ -58,7 +56,7 @@ namespace WarehouseCRUD.Storage.Pages.Products
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ProductExists(Product.Id))
+                if (!CellTypeExists(CellType.Id))
                 {
                     return NotFound();
                 }
@@ -71,9 +69,9 @@ namespace WarehouseCRUD.Storage.Pages.Products
             return RedirectToPage("./Index");
         }
 
-        private bool ProductExists(int id)
+        private bool CellTypeExists(int id)
         {
-            return _context.Products.Any(e => e.Id == id);
+            return _context.CellTypes.Any(e => e.Id == id);
         }
     }
 }

@@ -6,9 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using WarehouseCRUD.Storage.DataContext;
-using WarehouseCRUD.Storage.Models;
+using WarehouseCRUD.Storage.Models.Storage;
 
-namespace WarehouseCRUD.Storage.Pages.Products
+namespace WarehouseCRUD.Storage.Pages.Storage.CellTypes
 {
     public class CreateModel : PageModel
     {
@@ -21,12 +21,11 @@ namespace WarehouseCRUD.Storage.Pages.Products
 
         public IActionResult OnGet()
         {
-        ViewData["ProductCategoryId"] = new SelectList(_context.ProductCategories, "Id", "Name");
             return Page();
         }
 
         [BindProperty]
-        public Product Product { get; set; }
+        public CellType CellType { get; set; }
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
@@ -36,7 +35,7 @@ namespace WarehouseCRUD.Storage.Pages.Products
                 return Page();
             }
 
-            _context.Products.Add(Product);
+            _context.CellTypes.Add(CellType);
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");

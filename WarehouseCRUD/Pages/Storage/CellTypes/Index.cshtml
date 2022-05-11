@@ -1,0 +1,60 @@
+﻿@page
+@model WarehouseCRUD.Storage.Pages.Storage.CellTypes.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CellType[0].Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CellType[0].MaxWeight)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CellType[0].Length)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CellType[0].Width)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CellType[0].Height)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.CellType) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaxWeight)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Length)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Width)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Height)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

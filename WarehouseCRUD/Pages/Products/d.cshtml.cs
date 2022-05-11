@@ -10,11 +10,11 @@ using WarehouseCRUD.Storage.Models;
 
 namespace WarehouseCRUD.Storage.Pages.Products
 {
-    public class DetailsModel : PageModel
+    public class dModel : PageModel
     {
         private readonly WarehouseCRUD.Storage.DataContext.StorageDbContext _context;
 
-        public DetailsModel(WarehouseCRUD.Storage.DataContext.StorageDbContext context)
+        public dModel(WarehouseCRUD.Storage.DataContext.StorageDbContext context)
         {
             _context = context;
         }
@@ -28,8 +28,8 @@ namespace WarehouseCRUD.Storage.Pages.Products
                 return NotFound();
             }
 
-            Product = await _context.Products.Include(p => p.ProductCategory).
-                FirstOrDefaultAsync(m => m.Id == id);
+            Product = await _context.Products
+                .Include(p => p.ProductCategory).FirstOrDefaultAsync(m => m.Id == id);
 
             if (Product == null)
             {

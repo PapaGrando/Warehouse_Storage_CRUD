@@ -50,6 +50,11 @@
                 <span asp-validation-for="Product.Height" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="Product.ProductCategoryId" class="form-label mt-4"></label>
+                <select asp-for="Product.ProductCategoryId" class="form-select" asp-items="ViewBag.ProductCategoryId"></select>
+                <span asp-validation-for="Product.ProductCategoryId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
