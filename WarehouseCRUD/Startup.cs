@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WarehouseCRUD.Storage.DataContext;
+using WarehouseCRUD.Storage.Sevices;
 
 namespace WarehouseCRUD.Storage
 {
@@ -30,6 +32,9 @@ namespace WarehouseCRUD.Storage
             services.AddDbContext<StorageDbContext>(opt =>
                 opt.UseNpgsql(Configuration.GetConnectionString("PgConnection")));
 
+            services.AddHttpContextAccessor();
+            services.AddTransient<IActionContextAccessor, ActionContextAccessor>();
+            services.AddScoped<IRazorRenderService, RazorRenderService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

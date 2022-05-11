@@ -5,7 +5,7 @@ VisualStudioVersion = 17.0.31912.275
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WarehouseCRUD.Storage", "WarehouseCRUD\WarehouseCRUD.Storage.csproj", "{42CB723B-071C-4A16-9B6F-76F758F0988E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarehouseCRUD.Storage.Tests", "Storage.Tests\WarehouseCRUD.Storage.Tests.csproj", "{943DA694-4D1E-4971-AD85-0D83059064E4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WarehouseCRUD.Storage.Tests", "Storage.Tests\WarehouseCRUD.Storage.Tests.csproj", "{943DA694-4D1E-4971-AD85-0D83059064E4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

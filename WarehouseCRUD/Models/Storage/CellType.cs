@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace WarehouseCRUD.Storage.Models.Storage
 {
@@ -16,23 +17,25 @@ namespace WarehouseCRUD.Storage.Models.Storage
         public string Name { get; set; }
 
         [Required]
-        [Range(0.0f, float.MaxValue)]
-        [Display(Name = "Вес кг")]
-        public float MaxWeight { get; set; }
+        [Range(0, double.MaxValue)]
+        [Display(Name = "Максимальный вес кг")]
+        public double MaxWeight { get; set; }
 
         [Required]
-        [Range(0.0, int.MaxValue)]
+        [Range(0, int.MaxValue)]
         [Display(Name = "Длина см")]
         public int Length { get; set; }
 
         [Required]
-        [Range(0.0, int.MaxValue)]
+        [Range(0, int.MaxValue)]
         [Display(Name = "Ширина см")]
         public int Width { get; set; }
 
         [Required]
-        [Range(0.0, int.MaxValue)]
+        [Range(0, int.MaxValue)]
         [Display(Name = "Высота см")]
         public int Height { get; set; }
+
+        public List<Cell> Cells { get; set; }
     }
 }
