@@ -2,12 +2,12 @@
 @model WarehouseCRUD.Storage.Pages.Products.CreateModel
 
 @{
-    ViewData["Title"] = "Добавление";
+    ViewData["Title"] = "Create";
 }
 
-<h1>Добавление товара</h1>
+<h1>Create</h1>
 
-<h4>Заполните форму</h4>
+<h4>Product</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -48,20 +48,21 @@
                 <input asp-for="Product.Height" class="form-control" />
                 <span asp-validation-for="Product.Height" class="text-danger"></span>
             </div>
-            <hr />
             <div class="form-group">
-                <input type="submit" value="Добавить товар" class="btn btn-primary" />
+                <label asp-for="Product.ProductCategoryId" class="control-label"></label>
+                <select asp-for="Product.ProductCategoryId" class ="form-select" asp-items="ViewBag.ProductCategoryId"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-page="Index">Назад к списку</a>
+    <a asp-page="Index">Back to List</a>
 </div>
 
 @section Scripts {
-    @{
-    await Html.RenderPartialAsync("_ValidationScriptsPartial");
-}
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

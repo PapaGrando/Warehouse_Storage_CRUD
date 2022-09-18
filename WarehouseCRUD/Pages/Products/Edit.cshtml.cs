@@ -6,16 +6,16 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using WarehouseCRUD.Storage.DataContext;
-using WarehouseCRUD.Storage.Models;
+using Storage.Core.Models;
+using Storage.DataBase.DataContext;
 
 namespace WarehouseCRUD.Storage.Pages.Products
 {
     public class EditModel : PageModel
     {
-        private readonly WarehouseCRUD.Storage.DataContext.StorageDbContext _context;
+        private readonly StorageDbContext _context;
 
-        public EditModel(WarehouseCRUD.Storage.DataContext.StorageDbContext context)
+        public EditModel(StorageDbContext context)
         {
             _context = context;
         }
@@ -30,12 +30,14 @@ namespace WarehouseCRUD.Storage.Pages.Products
                 return NotFound();
             }
 
-            Product = await _context.Products.FirstOrDefaultAsync(m => m.Id == id);
+            Product = await _context.Products
+                .Include(p => p.ProductCategory).FirstOrDefaultAsync(m => m.Id == id);
 
             if (Product == null)
             {
                 return NotFound();
             }
+           ViewData["ProductCategoryId"] = new SelectList(_context.ProductCategories, "Id", "Name");
             return Page();
         }
 

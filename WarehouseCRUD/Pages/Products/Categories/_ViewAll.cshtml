@@ -1,0 +1,44 @@
+﻿@using global::Storage.Core.Models
+@model IEnumerable<ProductCategory>
+<table class="table table-striped" id="catTable">
+
+    @if (Model.Count() != 0)
+    {
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    Действия
+                </th>
+            </tr>
+
+        </thead>
+        @foreach (var element in Model)
+        {
+            <tr>
+                <td>
+                    @element.Name
+                </td>
+                <td class="text-right">
+                    <a onclick="jQueryModalGet('?handler=CreateOrEdit&id=@element.Id','Редактировать категорию')"
+               class="btn btn-info text-white"> <i class="bi bi-pen"></i></a>
+                    <form method="post" asp-page="Index" asp-route-id="@element.Id" asp-page-handler="Delete"
+                  onsubmit="return jQueryModalDelete(this, 'Удалить эту категорию?')" class="d-inline">
+                        <button type="submit" class="btn btn-danger text-white"> <i class="bi bi-trash3"></i></button>
+                    </form>
+                </td>
+            </tr>
+        }
+    }
+    else
+    {
+        <tr><td class="text-xxl-center">Пусто</td></tr>
+    }
+</table>
+<script>
+    $(document).ready(function() {
+        $("#catTable").DataTable({processing: true});
+    });
+</script>

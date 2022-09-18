@@ -1,15 +1,17 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using WarehouseCRUD.Storage.DataContext;
+using Storage.Core.Interfaces;
+using Storage.DataBase.DataContext;
+using Storage.DataBase.Repos;
+using WarehouseCRUD.Storage.Factory;
+using WarehouseCRUD.Storage.Sevices;
+using WarehouseCRUD.Storage.Sevices.Interfaces;
+using WarehouseCRUD.Storage.Helpers;
 
 namespace WarehouseCRUD.Storage
 {
@@ -30,6 +32,15 @@ namespace WarehouseCRUD.Storage
             services.AddDbContext<StorageDbContext>(opt =>
                 opt.UseNpgsql(Configuration.GetConnectionString("PgConnection")));
 
+            services.AddLogging();
+
+            services.AddRepoServices();
+
+            services.AddHttpContextAccessor();
+            services.AddTransient<IActionContextAccessor, ActionContextAccessor>();
+            services.AddScoped<IRazorRenderService, RazorRenderService>();
+
+            services.AddSingleton<ISubAreaFactory, SubAreaFactory>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,7 +57,7 @@ namespace WarehouseCRUD.Storage
                 app.UseHsts();
             }
 
-            //app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();

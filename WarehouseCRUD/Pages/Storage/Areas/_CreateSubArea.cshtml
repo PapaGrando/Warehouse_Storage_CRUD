@@ -1,0 +1,39 @@
+﻿@using global::Storage.Core.DTO
+@model SubAreaConfiguration
+
+<form id="create-form" method="post" asp-page="Create"
+      asp-page-handler="CreateSubArea" onsubmit="return jQueryModalPost(this)">
+    <div class="form-group row align-items-center">
+        <label class="col-md-3 col-form-label">@Html.DisplayNameFor(x => x.Length)</label>
+        <div class="col-md-6">
+            <input type="number" autocomplete="off" asp-for="Length" name="Length" class="form-control">
+            <span asp-validation-for="Length" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row align-items-center">
+        <label class="col-md-3 col-form-label">@Html.DisplayNameFor(x => x.Height)</label>
+        <div class="col-md-6">
+            <input type="number" autocomplete="off" asp-for="Height" name="Height" class="form-control">
+            <span asp-validation-for="Height" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row align-items-center">
+        <label class="col-md-3 col-form-label">@Html.DisplayNameFor(x => x.Width)</label>
+        <div class="col-md-6">
+            <input type="number" autocomplete="off" asp-for="Width" name="Width" class="form-control">
+            <span asp-validation-for="Width" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row align-items-center">
+        <label asp-for="CellTypeId" class="control-label"></label>
+        <select asp-for="CellTypeId" class="form-select" asp-items="ViewBag.CellTypeId"></select>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Отменить</button>
+        <button type="submit" class="btn btn-success save-button">Сохранить</button>
+    </div>
+</form>
+
+<script type="text/javascript" language=javascript>
+    $.validator.unobtrusive.parse(document);
+</script>

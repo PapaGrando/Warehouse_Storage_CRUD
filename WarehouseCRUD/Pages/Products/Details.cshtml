@@ -1,4 +1,5 @@
 ﻿@page
+@using WarehouseCRUD.Storage.Helpers
 @model WarehouseCRUD.Storage.Pages.Products.DetailsModel
 
 @{
@@ -15,21 +16,30 @@
         <div>
             <h4>@Html.DisplayFor(model => model.Product.Name)</h4>
         </div>
+        <h5>Цена - @Html.DisplayFor(model => model.Product.Price)</h5>
         <div>
-            <img id="productImage" src="@Model.Product.ImageUrl" class="prodImg" width="520" />
+            <img src="@(Model.Product.ImageUrl is null ?
+                 Href(ImageHelper.DefaultImageUrl) : Model.Product.ImageUrl)"
+                 class="prod-img" />
         </div>
     </div>
+    <hr />
 </div>
-<hr />
-
 <div>
     <dl>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Product.ProductCategory)
+        </dt>
+        <dd class="col-sm-15">
+            @Html.DisplayFor(model => model.Product.ProductCategory.Name)
+        </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Product.Weight)
         </dt>
         <dd class="col-sm-15">
             @Html.DisplayFor(model => model.Product.Weight)
         </dd>
+
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Product.Length)
         </dt>
@@ -50,8 +60,8 @@
         </dd>
     </dl>
 </div>
-<hr/>
+<hr />
 <div>
-    <a asp-page="./Edit" asp-route-id="@Model.Product.Id" class="btn btn-warning">Редактировать</a> 
+    <a asp-page="./Edit" asp-route-id="@Model.Product.Id" class="btn btn-warning">Редактировать</a>
     <a asp-page="./Index" class="btn btn-secondary">Назад</a>
 </div>

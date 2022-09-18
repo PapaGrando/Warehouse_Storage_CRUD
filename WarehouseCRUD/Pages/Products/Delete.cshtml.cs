@@ -5,16 +5,16 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using WarehouseCRUD.Storage.DataContext;
-using WarehouseCRUD.Storage.Models;
+using Storage.Core.Models;
+using Storage.DataBase.DataContext;
 
 namespace WarehouseCRUD.Storage.Pages.Products
 {
     public class DeleteModel : PageModel
     {
-        private readonly WarehouseCRUD.Storage.DataContext.StorageDbContext _context;
+        private readonly StorageDbContext _context;
 
-        public DeleteModel(WarehouseCRUD.Storage.DataContext.StorageDbContext context)
+        public DeleteModel(StorageDbContext context)
         {
             _context = context;
         }
@@ -51,6 +51,7 @@ namespace WarehouseCRUD.Storage.Pages.Products
             {
                 _context.Products.Remove(Product);
                 await _context.SaveChangesAsync();
+                TempData["success"] = $"Товарная позиция удалена - {Product.Name}";
             }
 
             return RedirectToPage("./Index");
