@@ -1,5 +1,14 @@
 ﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 // for details on configuring this project to bundle and minify static web assets.
+
+$(document)
+    .ajaxStart(function () {
+        $('#loader-overlay').show()
+    })
+    .ajaxStop(function () {
+        $('#loader-overlay').hide()
+    });
+
 $(document).ready(function () {
     jQueryModalGet = (url, title) => {
         try {
@@ -45,8 +54,8 @@ $(document).ready(function () {
             console.log(ex)
         }
     }
-    jQueryModalDelete = form => {
-        if (confirm('Внимание! Это действие удалит выбранную запись. Вы уверены?')) {
+    jQueryModalDelete = (form, title) => {
+        if (confirm(title)) {
             try {
                 $.ajax({
                     type: 'POST',
@@ -68,3 +77,4 @@ $(document).ready(function () {
         return false;
     }
 });
+
