@@ -1,4 +1,5 @@
 ﻿@page
+@using WarehouseCRUD.Storage.Helpers
 @model WarehouseCRUD.Storage.Pages.Products.IndexModel
 
 @{
@@ -46,7 +47,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Product[0].Height)
             </th>
-            <th></th>
+            <th>
+                Действия
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -56,7 +59,7 @@
                 <td>
                     <a asp-page="./Details" asp-route-id="@item.Id">
                         <img id="productImage" src="@(item.ImageUrl is null ?
-                            Href(item.DefailtImageUrl) : item.ImageUrl)"
+                            Href(ImageHelper.DefaultImageUrl) : item.ImageUrl)"
                          class="img-list-thumbnail" />
                     </a>
                 </td>

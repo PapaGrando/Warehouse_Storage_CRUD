@@ -1,4 +1,5 @@
 ﻿@page
+@using WarehouseCRUD.Storage.Helpers
 @model WarehouseCRUD.Storage.Pages.Products.DetailsModel
 
 @{
@@ -18,7 +19,7 @@
         <h5>Цена - @Html.DisplayFor(model => model.Product.Price)</h5>
         <div>
             <img src="@(Model.Product.ImageUrl is null ?
-                 Href(Model.Product.DefailtImageUrl) : Model.Product.ImageUrl)"
+                 Href(ImageHelper.DefaultImageUrl) : Model.Product.ImageUrl)"
                  class="prod-img" />
         </div>
     </div>

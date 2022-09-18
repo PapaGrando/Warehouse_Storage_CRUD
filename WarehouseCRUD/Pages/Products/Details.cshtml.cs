@@ -5,16 +5,16 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using WarehouseCRUD.Storage.DataContext;
-using WarehouseCRUD.Storage.Models;
+using Storage.Core.Models;
+using Storage.DataBase.DataContext;
 
 namespace WarehouseCRUD.Storage.Pages.Products
 {
     public class DetailsModel : PageModel
     {
-        private readonly WarehouseCRUD.Storage.DataContext.StorageDbContext _context;
+        private readonly StorageDbContext _context;
 
-        public DetailsModel(WarehouseCRUD.Storage.DataContext.StorageDbContext context)
+        public DetailsModel(StorageDbContext context)
         {
             _context = context;
         }

@@ -1,28 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
-using WarehouseCRUD.Storage.DataContext;
-using WarehouseCRUD.Storage.Models;
-using WarehouseCRUD.Storage.Models.Helpers;
+using Storage.Core.Interfaces;
+using Storage.Core.Models;
+using Storage.DataBase.DataContext;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using WarehouseCRUD.Storage.Sevices;
+using WarehouseCRUD.Storage.Sevices.Interfaces;
 
 namespace WarehouseCRUD.Storage.Pages.Products.Categories
 {
     public class IndexModel : PageModel
     {
-        private readonly WarehouseCRUD.Storage.DataContext.StorageDbContext _context;
+        private readonly IProductCategoryRepoAsync _catRepo;
+        private readonly IUnitOfWorkAsync _uw;
         private readonly IRazorRenderService _renderService;
         public IList<ProductCategory> ProductCategories { get; set; }
 
-        public IndexModel(WarehouseCRUD.Storage.DataContext.StorageDbContext context,
-            IRazorRenderService renderService)
+        public IndexModel(IProductCategoryRepoAsync catRepo, IUnitOfWorkAsync uw, IRazorRenderService renderService)
         {
-            _context = context;
+            _catRepo = catRepo;
+            _uw = uw;
             _renderService = renderService;
         }
 
@@ -33,7 +34,7 @@ namespace WarehouseCRUD.Storage.Pages.Products.Categories
 
         public async Task<PartialViewResult> OnGetViewAllPartial()
         {
-            ProductCategories = await _context.ProductCategories.ToListAsync();
+            ProductCategories = await _catRepo.GetAllAsync();
             return new PartialViewResult
             {
                 ViewName = "_ViewAll",
@@ -52,7 +53,7 @@ namespace WarehouseCRUD.Storage.Pages.Products.Categories
                 });
             else
             {
-                var thisCat = await _context.ProductCategories.FindAsync(id);
+                var thisCat = await _catRepo.GetByIdAsync(id);
                 return new JsonResult(new
                 {
                     isValid = true,
@@ -66,20 +67,16 @@ namespace WarehouseCRUD.Storage.Pages.Products.Categories
             {
                 if (id == 0)
                 {
-                    await _context.ProductCategories.AddAsync(cat);
-                    await _context.SaveChangesAsync();
+                    await _catRepo.AddAsync(cat);
+                    await _uw.Commit();
                 }
                 else
                 {
-                    _context.Entry(cat).State = EntityState.Modified;
-                    await _context.SaveChangesAsync();
-                }
-                bool ProductCategoryExists(int id)
-                {
-                    return _context.ProductCategories.Any(e => e.Id == id);
+                    await _catRepo.UpdateAsync(cat);
+                    await _uw.Commit();
                 }
 
-                ProductCategories = await _context.ProductCategories.ToListAsync();
+                ProductCategories = await _catRepo.GetAllAsync();
                 var html = await _renderService.ToStringAsync("_ViewAll", ProductCategories);
                 return new JsonResult(new { isValid = true, html = html });
             }
@@ -95,18 +92,18 @@ namespace WarehouseCRUD.Storage.Pages.Products.Categories
         }
         public async Task<JsonResult> OnPostDeleteAsync(int id)
         {
-            var cat = await _context.ProductCategories.FindAsync(id);
+            var cat = await _catRepo.GetByIdAsync(id);
 
             if (cat == null)
                 return new JsonResult(new { isValid = false});
 
-            if (_context.Entry(cat).Collection(x => x.Products).Query().Any())
+            if (await _catRepo.IsContainsProductInCategoryAsync(id))
                 return new JsonResult(new { isValid = false });
 
-            _context.ProductCategories.Remove(cat);
-            await _context.SaveChangesAsync();
+            await _catRepo.DeleteAsync(cat);
+            await _uw.Commit();
 
-            ProductCategories = await _context.ProductCategories.ToListAsync();
+            ProductCategories = await _catRepo.GetAllAsync();
             var html = await _renderService.ToStringAsync("_ViewAll", ProductCategories);
             return new JsonResult(new { isValid = true, html = html});
         }

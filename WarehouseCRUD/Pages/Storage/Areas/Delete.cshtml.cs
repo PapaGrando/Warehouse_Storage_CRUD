@@ -5,16 +5,16 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using WarehouseCRUD.Storage.DataContext;
-using WarehouseCRUD.Storage.Models.Storage;
+using Storage.Core.Models.Storage;
+using Storage.DataBase.DataContext;
 
 namespace WarehouseCRUD.Storage.Pages.Storage.Areas
 {
     public class DeleteModel : PageModel
     {
-        private readonly WarehouseCRUD.Storage.DataContext.StorageDbContext _context;
+        private readonly StorageDbContext _context;
 
-        public DeleteModel(WarehouseCRUD.Storage.DataContext.StorageDbContext context)
+        public DeleteModel(StorageDbContext context)
         {
             _context = context;
         }

@@ -7,11 +7,15 @@
 
 <h1>Создание Зоны</h1>
 
+<button onclick="jQueryModalGet('?handler=CreateSubArea','Создать подзону')" class="btn btn-success">
+    Добавить подзону (стеллаж)
+</button>
+
 <h4>Заполните поля:</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form method="post">
+        <form method="post" asp-page-handler="SubmitArea">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Area.Name" class="control-label"></label>
@@ -19,16 +23,20 @@
                 <span asp-validation-for="Area.Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Создать зону" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
+
+
 <div>
-    <a asp-page="Index">Отмена</a>
+    <a asp-page="./Index" class="btn btn-secondary">Отменить</a>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }
