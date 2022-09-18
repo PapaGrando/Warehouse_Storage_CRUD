@@ -13,13 +13,10 @@ using System.IO;
 using System.Linq;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using WarehouseCRUD.Storage.Sevices.Interfaces;
 
 namespace WarehouseCRUD.Storage.Sevices
 {
-    public interface IRazorRenderService
-    {
-        Task<string> ToStringAsync<T>(string viewName, T model);
-    }
     public class RazorRenderService : IRazorRenderService
     {
         private readonly IRazorViewEngine _razorViewEngine;
