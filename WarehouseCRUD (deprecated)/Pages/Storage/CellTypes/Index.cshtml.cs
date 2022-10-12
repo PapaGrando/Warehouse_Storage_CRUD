@@ -6,9 +6,11 @@ using Storage.Core.Interfaces;
 using Storage.Core.Models;
 using Storage.Core.Models.Storage;
 using Storage.DataBase.DataContext;
+using Storage.DataBase.Exceptions;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WarehouseCRUD.Storage.Helpers;
 using WarehouseCRUD.Storage.Sevices;
 using WarehouseCRUD.Storage.Sevices.Interfaces;
 
@@ -16,15 +18,14 @@ namespace WarehouseCRUD.Storage.Pages.Storage.CellTypes
 {
     public class IndexModel : PageModel
     {
-        private readonly ICellTypeRepoAsync _ctRepo;
         private readonly IUnitOfWorkAsync _uw;
         private readonly IRazorRenderService _renderService;
+        private ICellTypeRepoAsync _ctRepo => _uw.CellTypes;
         public IList<CellType> CellTypes { get; set; }
 
-        public IndexModel(ICellTypeRepoAsync ctRepo, IUnitOfWorkAsync uw, 
+        public IndexModel(IUnitOfWorkAsync uw, 
             IRazorRenderService renderService)
         {
-            _ctRepo = ctRepo;
             _uw = uw;
             _renderService = renderService;
         }
@@ -77,7 +78,7 @@ namespace WarehouseCRUD.Storage.Pages.Storage.CellTypes
 
                 CellTypes = await _ctRepo.GetAllAsync();
                 var html = await _renderService.ToStringAsync("_ViewAll", CellTypes);
-                return new JsonResult(new { isValid = true, html });
+                return new JsonResult(new JqueryRequest { IsValid = true, Html = html });
             }
             else
             {
@@ -94,17 +95,26 @@ namespace WarehouseCRUD.Storage.Pages.Storage.CellTypes
             var ct = await _ctRepo.GetByIdAsync(id);
 
             if (ct == null)
-                return new JsonResult(new { isValid = false });
+                return new JsonResult(new JqueryRequest
+                { IsValid = false, Msg = "Этого типа ячейки не существует", Err = $"{id} CellType not found" });
 
-            if (await _ctRepo.IsCountainsCellsOfTypes(id))
-                return new JsonResult(new { isValid = false });
-
-            await _ctRepo.DeleteAsync(ct);
-            await _uw.Commit();
+            try
+            {
+                await _ctRepo.DeleteAsync(ct);
+                await _uw.Commit();
+            }
+            catch (NoCascadeDeletionException<CellType> ex)
+            {
+                return new JsonResult(new JqueryRequest
+                {
+                    IsValid = false,
+                    Msg = "В этой категирии еще находятся ячейки",
+                });
+            }
 
             CellTypes = await _ctRepo.GetAllAsync();
             var html = await _renderService.ToStringAsync("_ViewAll", CellTypes);
-            return new JsonResult(new { isValid = true, html });
+            return new JsonResult(new JqueryRequest { IsValid = true, Html = html });
         }
     }
 }

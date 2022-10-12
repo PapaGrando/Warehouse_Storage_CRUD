@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using Storage.Core.Models;
+using Storage.Core.Models.Storage;
 using Storage.DataBase.DataContext;
 
 namespace WarehouseCRUD.Storage.Pages.Products

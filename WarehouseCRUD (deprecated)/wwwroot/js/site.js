@@ -44,6 +44,12 @@ $(document).ready(function () {
                         $('#viewAll').html(res.html)
                         $('#form-modal').modal('hide');
                     }
+                    else if (res.err) {
+                        console.log("resData not Valid. Err - " + res.err)
+                    }
+                    if (res.msg) {
+                        alert(res.msg)
+                    }
                 },
                 error: function (err) {
                     console.log(err)
@@ -64,7 +70,15 @@ $(document).ready(function () {
                     contentType: false,
                     processData: false,
                     success: function (res) {
-                        $('#viewAll').html(res.html);
+                        if (res.isValid)
+                            $('#viewAll').html(res.html);
+                        else if (res.err) {
+                            console.log("resData not Valid. Err - " + res.err)
+                        }
+
+                        if (res.msg) {
+                            alert(res.msg)
+                        }
                     },
                     error: function (err) {
                         console.log(err)

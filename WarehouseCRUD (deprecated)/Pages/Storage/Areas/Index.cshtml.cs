@@ -33,13 +33,13 @@ namespace WarehouseCRUD.Storage.Pages.Storage.Areas
         public async Task<PartialViewResult> OnGetViewAllPartial()
         {
             AreasInfo = await _areaRepo.GetAreasInfoAsync();
-
+            
             return new PartialViewResult
             {
                 ViewName = "_ViewAll",
                 ViewData = new ViewDataDictionary<IEnumerable<AreaInfo>>
                 (ViewData, AreasInfo)
-            };
+            };  
         }
 
         public async Task<JsonResult> OnPostDeleteAsync(int id)

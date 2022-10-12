@@ -3,11 +3,13 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
 using Storage.Core.Interfaces;
-using Storage.Core.Models;
+using Storage.Core.Models.Storage;
 using Storage.DataBase.DataContext;
+using Storage.DataBase.Exceptions;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WarehouseCRUD.Storage.Helpers;
 using WarehouseCRUD.Storage.Sevices;
 using WarehouseCRUD.Storage.Sevices.Interfaces;
 
@@ -15,14 +17,12 @@ namespace WarehouseCRUD.Storage.Pages.Products.Categories
 {
     public class IndexModel : PageModel
     {
-        private readonly IProductCategoryRepoAsync _catRepo;
         private readonly IUnitOfWorkAsync _uw;
         private readonly IRazorRenderService _renderService;
         public IList<ProductCategory> ProductCategories { get; set; }
 
-        public IndexModel(IProductCategoryRepoAsync catRepo, IUnitOfWorkAsync uw, IRazorRenderService renderService)
+        public IndexModel(IUnitOfWorkAsync uw, IRazorRenderService renderService)
         {
-            _catRepo = catRepo;
             _uw = uw;
             _renderService = renderService;
         }
@@ -34,7 +34,7 @@ namespace WarehouseCRUD.Storage.Pages.Products.Categories
 
         public async Task<PartialViewResult> OnGetViewAllPartial()
         {
-            ProductCategories = await _catRepo.GetAllAsync();
+            ProductCategories = await _uw.ProductCategories.GetAllAsync();
             return new PartialViewResult
             {
                 ViewName = "_ViewAll",
@@ -45,19 +45,19 @@ namespace WarehouseCRUD.Storage.Pages.Products.Categories
         public async Task<JsonResult> OnGetCreateOrEditAsync(int id = 0)
         {
             if (id == 0)
-                return new JsonResult(new
+                return new JsonResult(new JqueryRequest
                 {
-                    isValid = true,
-                    html =
+                    IsValid = true,
+                    Html =
                     await _renderService.ToStringAsync("_CreateOrEdit", new ProductCategory())
                 });
             else
             {
-                var thisCat = await _catRepo.GetByIdAsync(id);
-                return new JsonResult(new
+                var thisCat = await _uw.ProductCategories.GetByIdAsync(id);
+                return new JsonResult(new JqueryRequest
                 {
-                    isValid = true,
-                    html = await _renderService.ToStringAsync("_CreateOrEdit", thisCat)
+                    IsValid = true,
+                    Html = await _renderService.ToStringAsync("_CreateOrEdit", thisCat)
                 });
             }
         }
@@ -67,18 +67,18 @@ namespace WarehouseCRUD.Storage.Pages.Products.Categories
             {
                 if (id == 0)
                 {
-                    await _catRepo.AddAsync(cat);
+                    await _uw.ProductCategories.AddAsync(cat);
                     await _uw.Commit();
                 }
                 else
                 {
-                    await _catRepo.UpdateAsync(cat);
+                    await _uw.ProductCategories.UpdateAsync(cat);
                     await _uw.Commit();
                 }
 
-                ProductCategories = await _catRepo.GetAllAsync();
+                ProductCategories = await _uw.ProductCategories.GetAllAsync();
                 var html = await _renderService.ToStringAsync("_ViewAll", ProductCategories);
-                return new JsonResult(new { isValid = true, html = html });
+                return new JsonResult(new JqueryRequest { IsValid = true, Html = html });
             }
             else
             {
@@ -92,20 +92,29 @@ namespace WarehouseCRUD.Storage.Pages.Products.Categories
         }
         public async Task<JsonResult> OnPostDeleteAsync(int id)
         {
-            var cat = await _catRepo.GetByIdAsync(id);
+            var cat = await _uw.ProductCategories.GetByIdAsync(id);
 
             if (cat == null)
-                return new JsonResult(new { isValid = false});
+                return new JsonResult(new JqueryRequest
+                { IsValid = false, Msg = "Категирии не существует", Err = $"{id} category not found" });
 
-            if (await _catRepo.IsContainsProductInCategoryAsync(id))
-                return new JsonResult(new { isValid = false });
+            try
+            {
+                await _uw.ProductCategories.DeleteAsync(cat);
+                await _uw.Commit();
+            }
+            catch (NoCascadeDeletionException<ProductCategory> ex)
+            {
+                return new JsonResult(new JqueryRequest
+                {
+                    IsValid = false,
+                    Msg = "В категории еще есть товары",
+                });
+            }
 
-            await _catRepo.DeleteAsync(cat);
-            await _uw.Commit();
-
-            ProductCategories = await _catRepo.GetAllAsync();
+            ProductCategories = await _uw.ProductCategories.GetAllAsync();
             var html = await _renderService.ToStringAsync("_ViewAll", ProductCategories);
-            return new JsonResult(new { isValid = true, html = html});
+            return new JsonResult(new JqueryRequest { IsValid = true, Html = html });
         }
     }
 }
