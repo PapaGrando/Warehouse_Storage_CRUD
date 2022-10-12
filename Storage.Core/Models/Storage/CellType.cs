@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using Storage.Core.Interfaces;
 using System.ComponentModel.DataAnnotations;
 
 namespace Storage.Core.Models.Storage
@@ -7,7 +7,7 @@ namespace Storage.Core.Models.Storage
     /// Тип ячейки, обозначающая, какой тип товаров можно хранить
     /// Мелкий, Ячейки мезонина, Крупногабаритный стеллаж, Напольные ячейки
     /// </summary>
-    public class CellType
+    public class CellType : IBaseModel
     {
         [Key]
         public int Id { get; set; }
@@ -37,6 +37,6 @@ namespace Storage.Core.Models.Storage
         [Display(Name = "Высота см")]
         public int Height { get; set; }
 
-        public List<Cell> Cells { get; set; }
+        public List<SubArea> SubAreas { get; set; }
     }
 }

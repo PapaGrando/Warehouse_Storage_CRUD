@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using Storage.Core.Interfaces;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Storage.Core.Models.Storage
 {
-    public class Area
+    public class Area : IBaseModel
     {
         [Key]
         public int Id { get; set; }
@@ -14,7 +15,5 @@ namespace Storage.Core.Models.Storage
         [Display(Name = "Название зоны")]
         public string Name { get; set; }
         public List<SubArea> SubAreas { get; set; }
-        public List<Cell> Cells { get; set; }
-        public List<StorageItem> StorageItems { get; set; }
     }
 }

@@ -5,7 +5,6 @@ namespace Storage.Core.Interfaces
 {
     public interface IAreaRepoAsync : IBaseRepoAsync<Area>
     {
-        Task<IList<AreaInfo>> GetAreasInfoAsync();
-        Task<bool> IsContainsStorageItemsInArea(int areaId);
+
     }
 }

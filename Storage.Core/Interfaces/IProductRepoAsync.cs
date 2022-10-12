@@ -1,4 +1,4 @@
-﻿using Storage.Core.Models;
+﻿using Storage.Core.Models.Storage;
 
 namespace Storage.Core.Interfaces
 {

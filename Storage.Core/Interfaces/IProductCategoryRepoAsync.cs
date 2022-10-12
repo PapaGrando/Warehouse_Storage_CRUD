@@ -1,9 +1,6 @@
-﻿using Storage.Core.Models;
+﻿using Storage.Core.Models.Storage;
 
 namespace Storage.Core.Interfaces
 {
-    public interface IProductCategoryRepoAsync : IBaseRepoAsync<ProductCategory> 
-    {
-        Task<bool> IsContainsProductInCategoryAsync(int id);
-    }
+    public interface IProductCategoryRepoAsync : IBaseRepoAsync<ProductCategory> { }
 }

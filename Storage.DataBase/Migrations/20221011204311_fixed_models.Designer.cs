@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Storage.DataBase.DataContext;
@@ -11,9 +12,10 @@ using Storage.DataBase.DataContext;
 namespace Storage.DataBase.Migrations
 {
     [DbContext(typeof(StorageDbContext))]
-    partial class StorageDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221011204311_fixed_models")]
+    partial class fixed_models
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -174,7 +176,7 @@ namespace Storage.DataBase.Migrations
                     b.Property<DateTime>("AddTime")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int?>("CellId")
+                    b.Property<int>("CellId")
                         .HasColumnType("integer");
 
                     b.Property<int>("ProductId")
@@ -245,7 +247,9 @@ namespace Storage.DataBase.Migrations
                 {
                     b.HasOne("Storage.Core.Models.Storage.Cell", "Cell")
                         .WithMany("Items")
-                        .HasForeignKey("CellId");
+                        .HasForeignKey("CellId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Storage.Core.Models.Storage.Product", "Product")
                         .WithMany("Items")

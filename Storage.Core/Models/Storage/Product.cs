@@ -1,11 +1,11 @@
-﻿using Storage.Core.Models.Storage;
+﻿using Storage.Core.Interfaces;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Storage.Core.Models
+namespace Storage.Core.Models.Storage
 {
-    public class Product
+    public class Product : IBaseModel
     {
         [Key]
         public int Id { get; set; }

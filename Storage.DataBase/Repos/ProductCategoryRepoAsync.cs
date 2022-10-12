@@ -1,36 +1,35 @@
 ﻿using Storage.Core.Interfaces;
-using Storage.Core.Models;
 using Storage.DataBase.DataContext;
 using Microsoft.EntityFrameworkCore;
+using Storage.Core.Models.Storage;
+using Storage.DataBase.Exceptions;
+using Microsoft.Extensions.Logging;
 
 namespace Storage.DataBase.Repos
 {
     public class ProductCategoryRepoAsync : BaseRepoAsync<ProductCategory>, IProductCategoryRepoAsync
     {
         private StorageDbContext _context;
+        private ILogger _logger;
 
-        public ProductCategoryRepoAsync(StorageDbContext context) : base(context)
+        public ProductCategoryRepoAsync(StorageDbContext context, ILogger<ProductCategoryRepoAsync> logger) : base(context, logger)
         {
             _context = context;
+            _logger = logger;
         }
 
-        //TODO : Переопределить Delete и проверять там
-        /// <exception cref="ArgumentException"></exception>
-        public async Task<bool> IsContainsProductInCategoryAsync(int idCategory)
+        public async override Task<ProductCategory> GetByIdAsync(int id) =>
+            await _context.ProductCategories.Include(x => x.Products).FirstOrDefaultAsync(x => x.Id == id);
+
+        /// <exception cref="NoCascadeDeletionException"></exception>
+        public override Task DeleteAsync(ProductCategory category)
         {
-            var tableName = "\"Products\"";
-            var res = await _context.ProductCategories.FromSqlInterpolated($"SELECT * FROM {tableName}").ToListAsync();
+            _logger.LogInformation("Checking for cascade deletion...");
 
+            if (_context.Products.Any(x => x.ProductCategoryId == category.Id))
+                throw new NoCascadeDeletionException<ProductCategory>();
 
-            var targetCat = _context.ProductCategories.AsQueryable().Where(x => x.Name[0] == 'M')
-                .First();
-
-            if (targetCat is null)
-                throw new ArgumentException($"Category with this {nameof(idCategory)} does not exist");
-
-            var result = targetCat.Products.AsQueryable().Any();
-
-            return result;
+            return base.DeleteAsync(category);         
         }
     }
 }

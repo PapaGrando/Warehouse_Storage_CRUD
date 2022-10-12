@@ -7,9 +7,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WarehouseCRUD.Storage", "Wa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WarehouseCRUD.Storage.Tests", "Storage.Tests\WarehouseCRUD.Storage.Tests.csproj", "{943DA694-4D1E-4971-AD85-0D83059064E4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Storage.Core", "Storage.Core\Storage.Core.csproj", "{6A9B95CE-0CAF-496E-A744-E447EE9F6609}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Storage.Core", "Storage.Core\Storage.Core.csproj", "{6A9B95CE-0CAF-496E-A744-E447EE9F6609}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Storage.DataBase", "Storage.DataBase\Storage.DataBase.csproj", "{CDC43AA6-618E-446E-B1D8-E154635A6139}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Storage.DataBase", "Storage.DataBase\Storage.DataBase.csproj", "{CDC43AA6-618E-446E-B1D8-E154635A6139}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Storage.WebApi", "StorageWebApi\Storage.WebApi.csproj", "{1806A74F-E5FE-4647-B12B-49AF4FCDFC15}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6A9B95CE-0CAF-496E-A744-E447EE9F6609} = {6A9B95CE-0CAF-496E-A744-E447EE9F6609}
+		{CDC43AA6-618E-446E-B1D8-E154635A6139} = {CDC43AA6-618E-446E-B1D8-E154635A6139}
+	EndProjectSection
+EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "reactproject1", "reactproject1\reactproject1.esproj", "{360FA706-D000-4D1B-BC54-7DA7FA6E8044}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +41,16 @@ Global
 		{CDC43AA6-618E-446E-B1D8-E154635A6139}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CDC43AA6-618E-446E-B1D8-E154635A6139}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CDC43AA6-618E-446E-B1D8-E154635A6139}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1806A74F-E5FE-4647-B12B-49AF4FCDFC15}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1806A74F-E5FE-4647-B12B-49AF4FCDFC15}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1806A74F-E5FE-4647-B12B-49AF4FCDFC15}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1806A74F-E5FE-4647-B12B-49AF4FCDFC15}.Release|Any CPU.Build.0 = Release|Any CPU
+		{360FA706-D000-4D1B-BC54-7DA7FA6E8044}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{360FA706-D000-4D1B-BC54-7DA7FA6E8044}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{360FA706-D000-4D1B-BC54-7DA7FA6E8044}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{360FA706-D000-4D1B-BC54-7DA7FA6E8044}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{360FA706-D000-4D1B-BC54-7DA7FA6E8044}.Release|Any CPU.Build.0 = Release|Any CPU
+		{360FA706-D000-4D1B-BC54-7DA7FA6E8044}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
