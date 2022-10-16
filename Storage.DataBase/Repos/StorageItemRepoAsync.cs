@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using Storage.Core.Interfaces;
 using Storage.Core.Models.Storage;
 using Storage.DataBase.DataContext;
+using Storage.DataBase.Exceptions;
 
 namespace Storage.DataBase.Repos
 {
@@ -16,10 +17,7 @@ namespace Storage.DataBase.Repos
             _context = context;
         }
 
-        public override Task<StorageItem> AddAsync(StorageItem entity)
-        {
-            return base.AddAsync(entity);
-        }
+
 
         public override async Task<StorageItem> GetByIdAsync(int id) =>
             await _context.AllItems
@@ -27,9 +25,33 @@ namespace Storage.DataBase.Repos
                 .ThenInclude(t => t.ProductCategory)
                 .Include(x => x.Cell).FirstOrDefaultAsync(x => x.Id == id);
 
-        public override Task UpdateAsync(StorageItem entity)
+        public override async Task<StorageItem> AddAsync(StorageItem entity)
         {
-            return base.UpdateAsync(entity);
+            if (!await CheckItemFitToCell(entity))
+                throw new StorageItemDoesNotFitInCell(entity.CellId, entity.ProductId);
+
+            return await base.AddAsync(entity);
+        }
+
+        public async override Task UpdateAsync(StorageItem entity)
+        {
+            if (!await CheckItemFitToCell(entity))
+                throw new StorageItemDoesNotFitInCell(entity.CellId, entity.ProductId);
+
+            await base.UpdateAsync(entity);
+        }
+
+        protected async Task<bool> CheckItemFitToCell(StorageItem entity)
+        {
+            var result = await _context.StoredFunctionsResults
+                .FromSqlInterpolated(
+                $"SELECT storageitem_can_insert_in_cell({entity.CellId}, {entity.ProductId}, {entity.Id})")
+                .FirstOrDefaultAsync();
+
+            if (result == null)
+                result = new StoredFunctionsResults() { storageitem_can_insert_in_cell = false };
+                
+            return result.storageitem_can_insert_in_cell;
         }
     }
 }

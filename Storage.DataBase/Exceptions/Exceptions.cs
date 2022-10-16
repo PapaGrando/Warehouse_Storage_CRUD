@@ -22,4 +22,11 @@
         public NotFound(int? id)
             : base($"Record {typeof(T).Name} with id: {id} not found.") { }
     }
+
+    public class StorageItemDoesNotFitInCell : BaseDataException
+    {
+        public StorageItemDoesNotFitInCell(int? idCell, int? idProd)
+            : base($"Current Item of prodId: {idProd} cant fit in cell with id: {idCell}. " +
+                  $"Item is so big or not enough free space") { }
+    }
 }

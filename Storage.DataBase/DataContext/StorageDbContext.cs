@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using Storage.Core.Interfaces;
 using Storage.Core.Models;
 using Storage.Core.Models.Storage;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Storage.DataBase.DataContext
 {
@@ -33,6 +34,7 @@ namespace Storage.DataBase.DataContext
         public DbSet<SubArea> SubAreas { get; init; }
         public DbSet<Cell> Cells { get; init; }
         public DbSet<CellType> CellTypes { get; init; }
+        public DbSet<StoredFunctionsResults> StoredFunctionsResults { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) =>
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(CellTypeEntityConfiguration).Assembly);
@@ -48,6 +50,7 @@ namespace Storage.DataBase.DataContext
                 .IsUnique();
         }
     }
+
     public class ProductCategoryEntityConfiguration : IEntityTypeConfiguration<ProductCategory>
     {
         public void Configure(EntityTypeBuilder<ProductCategory> builder)
@@ -111,5 +114,10 @@ namespace Storage.DataBase.DataContext
                 .HasForeignKey(x => x.CellId);
         }
     }
-#endregion
+    #endregion
+    [Keyless]
+    public class StoredFunctionsResults
+    {
+        public bool storageitem_can_insert_in_cell { get; set; }
+    }
 }

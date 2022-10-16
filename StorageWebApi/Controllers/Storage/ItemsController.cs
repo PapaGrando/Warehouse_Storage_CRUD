@@ -65,6 +65,10 @@ namespace Storage.WebApi.Controllers.Storage
                 result = await _sr.AddAsync(Mapper.Map<StorageItem>(value));
                 await Uw.Commit();
             }
+            catch (StorageItemDoesNotFitInCell ex)
+            {
+                return Conflict(ex.Message);
+            }
             catch (Exception ex)
             {
                 Logger.LogError(ex.Message, ex);
@@ -72,7 +76,7 @@ namespace Storage.WebApi.Controllers.Storage
             }
 
             outVal = Mapper.Map<StorageItemDTO>(result);
-            return CreatedAtAction(nameof(Get), outVal);
+            return Ok(outVal);
         }
 
         [HttpPut("{id}")]
@@ -87,6 +91,10 @@ namespace Storage.WebApi.Controllers.Storage
             catch (NotFound<StorageItem> ex)
             {
                 return NotFound();
+            }
+            catch (StorageItemDoesNotFitInCell ex)
+            {
+                return Conflict(ex.Message);
             }
             catch (Exception ex)
             {
