@@ -4,11 +4,11 @@ using Storage.Core.Interfaces;
 using Storage.Core.Models;
 using Storage.Core.Models.Storage;
 using Storage.DataBase.Exceptions;
-using Storage.WebApi.DTO;
+using WarehouseCRUD.Storage.Helpers;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace Storage.WebApi.Controllers.Products
+namespace Storage.Core.Controllers.Products
 {
     [Route("api/Products/[controller]")]
     [ApiController]
@@ -25,25 +25,18 @@ namespace Storage.WebApi.Controllers.Products
         /// </summary>
         /// <returns>ProductCategoryDTO</returns>
         [HttpGet("all")]
-        public override async Task<IEnumerable<ProductCategoryDTO>> GetAll()
-        {
-            var data = await _pcRepo.GetAllAsync();
-
-            return data.Select(x => Mapper.Map<ProductCategoryDTO>(x)).ToArray();
-        }
+        public override async Task<IEnumerable<ProductCategoryDTO>> GetAll() =>
+            await BaseControllerOperations
+                .BasicGetAll(async () => await _pcRepo.GetAllAsync());
 
         /// <summary>
         /// Returning categories with parameters.
-        /// Offset - Offset in database table from start. PageSize - Object list size
         /// </summary>
         /// <returns>ProductCategoryDTO</returns>
         [HttpGet]
-        public override async Task<IEnumerable<ProductCategoryDTO>> GetListWithParameters([FromQuery] QuerySettings query)
-        {
-            var result = await _pcRepo.GetSelectedAsync(query);
-
-            return result.Select(x => Mapper.Map<ProductCategoryDTO>(x)).ToArray();
-        }
+        public override async Task<IEnumerable<ProductCategoryDTO>> GetListWithParameters([FromQuery] QuerySettings query) =>
+            await BaseControllerOperations
+                .BasicGetAll(async () => await _pcRepo.GetSelectedAsync(query));
 
         /// <summary>
         /// Returning Category with ID

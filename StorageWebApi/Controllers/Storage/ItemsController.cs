@@ -4,11 +4,11 @@ using Storage.Core.Interfaces;
 using Storage.Core.Models;
 using Storage.Core.Models.Storage;
 using Storage.DataBase.Exceptions;
-using Storage.WebApi.DTO;
+using Storage.Core.Interfaces;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace Storage.WebApi.Controllers.Storage
+namespace Storage.Core.Controllers.Storage
 {
     [Route("api/Storage/[controller]")]
     [ApiController]
@@ -18,6 +18,10 @@ namespace Storage.WebApi.Controllers.Storage
         public ItemsController(IUnitOfWorkAsync uw, ILogger<ItemsController> logger, IMapper mapper)
             : base(uw, logger, mapper) { }
 
+        /// <summary>
+        /// Returns detailed info of StorageItem.
+        /// </summary>
+        /// <param name="id">StorageItem id</param>
         [HttpGet("{id}")]
         public override async Task<ActionResult<object>> Get(int id)
         {
@@ -35,28 +39,44 @@ namespace Storage.WebApi.Controllers.Storage
             });
         }
 
+        /// <summary>
+        /// Returns ALL StorageItems in database. Use wisely
+        /// </summary>
         [HttpGet("all")]
-        public override async Task<IEnumerable<StorageItemDTO>> GetAll()
-        {
-            var data = await _sr.GetAllAsync();
+        public override async Task<IEnumerable<StorageItemDTO>> GetAll() =>
+            await BaseControllerOperations.BasicGetAll(async () => await _sr.GetAllAsync());
 
-            return data.Select(x => Mapper.Map<StorageItemDTO>(x)).ToArray();
-        }
-
+        /// <summary>
+        /// Returns StorageItems with parameters. Use for pagination. See headers parameters
+        /// </summary>
         [HttpGet]
-        public override async Task<IEnumerable<StorageItemDTO>> GetListWithParameters([FromQuery] QuerySettings query)
-        {
-            var result = await _sr.GetSelectedAsync(query);
+        public override async Task<IEnumerable<StorageItemDTO>> GetListWithParameters([FromQuery] QuerySettings query) =>
+            await BaseControllerOperations.BasicGetAll(async () => await _sr.GetSelectedAsync(query));
 
-            return result.Select(x => Mapper.Map<StorageItemDTO>(x)).ToArray();
+        /// <summary>
+        /// Creating new StorageItem add try add to target Cell
+        /// </summary>
+        /// <param name="value">
+        /// Id - ignored <br/>
+        /// if AddTime is null, ist will be generated on server side
+        /// </param>
+        [HttpPost]
+        public override async Task<ActionResult> Post([FromBody] StorageItemDTO value)
+        {
+            value.AddTime = value.AddTime ?? DateTime.Now;
+
+            return await BaseControllerOperations.BasicPost(value,
+                            async () => await _sr.AddAsync(Mapper.Map<StorageItem>(value)),
+                            nameof(Get));
         }
 
-        [HttpPost]
-        public override async Task<ActionResult> Post([FromBody] StorageItemDTO value) =>
-            await BaseControllerOperations.BasicPost(value, 
-                async () => await _sr.AddAsync(Mapper.Map<StorageItem>(value)), 
-                nameof(Get));
-
+        /// <summary>
+        /// Try changing target StorageItem or replace to target cell
+        /// </summary>
+        /// <param name="value">
+        /// if AddTime is null, ist will be generated on server side
+        /// </param>
+        /// <param name="id">Storage item to change</param>
         [HttpPut("{id}")]
         public override async Task<ActionResult> Put(int id, [FromBody] StorageItemDTO value)
         {
@@ -64,6 +84,9 @@ namespace Storage.WebApi.Controllers.Storage
             return await BaseControllerOperations.BasicPut(() => _sr.UpdateAsync(Mapper.Map<StorageItem>(value)));
         }
 
+        /// <summary>
+        /// Deletes target StorageItem
+        /// </summary>
         [HttpDelete("{id}")]
         public override async Task<ActionResult> Delete(int id) =>
             await BaseControllerOperations.BasicDelete(() => _sr.DeleteAsync(new StorageItem() { Id = id }));

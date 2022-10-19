@@ -3,10 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 using Storage.Core.Interfaces;
 using Storage.Core.Models;
 using Storage.DataBase.Exceptions;
-using Storage.WebApi.DTO;
-using Storage.WebApi.Helpers;
+using Storage.Core.Interfaces;
+using Storage.Core.Helpers;
 
-namespace Storage.WebApi.Controllers
+namespace Storage.Core.Controllers
 {
     public abstract class StorageBaseController<DTO, CT> : ControllerBase
         where DTO : class, IBaseDTO

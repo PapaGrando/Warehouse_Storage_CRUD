@@ -4,9 +4,9 @@ using Storage.Core.Interfaces;
 using Storage.Core.Models;
 using Storage.Core.Models.Storage;
 using Storage.DataBase.Exceptions;
-using Storage.WebApi.DTO;
+using Storage.Core.Interfaces;
 
-namespace Storage.WebApi.Controllers.Products
+namespace Storage.Core.Controllers.Products
 {
     [Route("api/Products")]
     [ApiController]
@@ -16,18 +16,15 @@ namespace Storage.WebApi.Controllers.Products
 
         public ProductsController(IUnitOfWorkAsync uw, ILogger<ProductsController> logger, IMapper mapper)
             : base(uw, logger, mapper) { }
+
         // GET: api/<Categories>
         /// <summary>
         /// Returning All Products
         /// </summary>
         /// <returns>ProductCategoryDTO</returns>
         [HttpGet("all")]
-        public override async Task<IEnumerable<ProductDTO>> GetAll()
-        {
-            var data = await _pRepo.GetAllAsync();
-
-            return data.Select(x => Mapper.Map<ProductDTO>(x)).ToArray();
-        }
+        public override async Task<IEnumerable<ProductDTO>> GetAll() =>
+            await BaseControllerOperations.BasicGetAll(async () => await _pRepo.GetAllAsync());
 
         /// <summary>
         /// Returning categories with parameters.
@@ -35,12 +32,8 @@ namespace Storage.WebApi.Controllers.Products
         /// </summary>
         /// <returns>ProductCategoryDTO</returns>
         [HttpGet]
-        public override async Task<IEnumerable<ProductDTO>> GetListWithParameters([FromQuery] QuerySettings query)
-        {
-            var result = await _pRepo.GetSelectedAsync(query);
-
-            return result.Select(x => Mapper.Map<ProductDTO>(x)).ToArray();
-        }
+        public override async Task<IEnumerable<ProductDTO>> GetListWithParameters([FromQuery] QuerySettings query) => 
+            await BaseControllerOperations.BasicGetAll(async () => await _pRepo.GetSelectedAsync(query));
 
         /// <summary>
         /// Returning Category with ID

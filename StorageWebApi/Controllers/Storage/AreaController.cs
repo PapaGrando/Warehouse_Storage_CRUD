@@ -1,16 +1,16 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Storage.Core.DTO;
+using Storage.Core.Interfaces;
 using Storage.Core.Interfaces;
 using Storage.Core.Models;
 using Storage.Core.Models.Storage;
 using Storage.DataBase.Exceptions;
-using Storage.WebApi.DTO;
-using Storage.WebApi.Helpers;
+using Storage.Core.Interfaces;
+using Storage.Core.Helpers;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace Storage.WebApi.Controllers.Storage
+namespace Storage.Core.Controllers.Storage
 {
     [Route("api/Storage/[controller]")]
     [ApiController]
@@ -36,6 +36,11 @@ namespace Storage.WebApi.Controllers.Storage
             _baseOperations = new BaseControllerOperationsStrategy<AreaDTO>(_uw, _logger, _mapper, this);
         }
 
+        /// <summary>
+        /// Get Area by id with all Subareas, Cells and StorageItems in Area. Its a heavy request
+        /// </summary>
+        /// <param name="id">Id of Area</param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<AreaDTOInfoReadOnly>> Get(int id)
         {
@@ -54,22 +59,32 @@ namespace Storage.WebApi.Controllers.Storage
             return outa;
         }
 
+        /// <summary>
+        /// Returning all Areas names and id
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("all")]
-        public async Task<IEnumerable<AreaDTO>> GetAll()
-        {
-            var data = await _ar.GetAllAsync();
+        public async Task<IEnumerable<AreaDTO>> GetAll() =>
+            await _baseOperations.BasicGetAll(async () => await _ar.GetAllAsync());
 
-            return data.Select(x => _mapper.Map<AreaDTO>(x)).ToArray();
-        }
-
+        /// <summary>
+        /// Returning list Areas with parameters
+        /// </summary>
         [HttpGet]
-        public async Task<IEnumerable<AreaDTO>> GetListWithParameters([FromQuery] QuerySettings query)
-        {
-            var result = await _ar.GetSelectedAsync(query);
+        public async Task<IEnumerable<AreaDTO>> GetListWithParameters([FromQuery] QuerySettings query) =>
+            await _baseOperations.BasicGetAll(async () => await _ar.GetSelectedAsync(query));
 
-            return result.Select(x => _mapper.Map<AreaDTO>(x)).ToArray();
-        }
-
+        /// <summary>
+        /// Creating new area with Configuration 
+        /// </summary>
+        /// <param name="value">
+        /// Id - ignored <br/>
+        /// Name - Set Name of Area <br/>
+        /// SubAreaConfiguration - SubArea and Cells configuration: <br/>
+        /// Length(1 - 1000), Width(1 - 2), Height(from 85) - size SubArea in Cells <br/>
+        /// CellTypeId - id of type Cell (see CellType)
+        /// </param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] AreaConfiguration value)
         {
@@ -82,12 +97,20 @@ namespace Storage.WebApi.Controllers.Storage
                             nameof(Get));
         }
 
+        /// <summary>
+        /// Change name of Area
+        /// </summary>
+        /// <param name="id">Area id</param>
         [HttpPut("{id}")]
         public async Task<ActionResult> Put(int id, [FromBody] AreaDTO value) =>
 
             await _baseOperations.BasicPut(() =>
                 _ar.UpdateAsync(new Area() { Id = value.Id, Name = value.Name }));
 
+        /// <summary>
+        /// Removes Area. its Delete all SubAreas and Cells in this Area. 
+        /// Must cleared from StorageItems before using.
+        /// </summary>
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id) =>

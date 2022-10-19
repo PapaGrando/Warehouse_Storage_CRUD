@@ -2,11 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Storage.Core.Interfaces;
 using Storage.Core.Models;
-using Storage.WebApi.DTO;
+using Storage.Core.Interfaces;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace Storage.WebApi.Controllers
+namespace Storage.Core.Controllers
 {
     [Route("api/Storage/[controller]")]
     [ApiController]
@@ -43,12 +43,12 @@ namespace Storage.WebApi.Controllers
             };
         }
 
-        [HttpGet("all/{subAreaId}")]
-        public async Task<IEnumerable<CellDTOInfoReadOnly>> GetAll([FromQuery] int subAreaid)
+        [HttpGet("all/{subAreaid}")]
+        public async Task<IEnumerable<CellDTOInfoReadOnly>> GetAll(int subAreaid)
         {
             var data = await _cr.GetAllInSubAreaAsync(subAreaid);
 
-            return data.Select(x => new CellDTOInfoReadOnly()
+            return data.Entities.Select(x => new CellDTOInfoReadOnly()
             {
                 Id = x.Id,
                 SubAreaId = x.SubAreaId,
@@ -65,7 +65,7 @@ namespace Storage.WebApi.Controllers
         {
             var result = await _cr.GetSelectedAsync(query);
 
-            return result.Select(x => new CellDTOInfoReadOnly()
+            return result.Entities.Select(x => new CellDTOInfoReadOnly()
             {
                 Id = x.Id,
                 SubAreaId = x.SubAreaId,
