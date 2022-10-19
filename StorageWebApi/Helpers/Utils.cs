@@ -1,11 +1,14 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 using Storage.Core.Builders;
 using Storage.Core.Interfaces;
+using Storage.DataBase.Exceptions;
 using Storage.DataBase.Repos;
+using Storage.WebApi.Helpers;
 
 namespace WarehouseCRUD.Storage.Helpers
 {
-    internal static class Utils
+    internal static class DIUtils
     {
         internal static void AddRepoServices(this IServiceCollection services)
         {
@@ -22,7 +25,7 @@ namespace WarehouseCRUD.Storage.Helpers
             services.AddTransient<IUnitOfWorkAsync, UnitOfWork>();
         }
 
-        internal static void AddBuilders(this IServiceCollection services)
+        internal static void AddStorageServises(this IServiceCollection services)
         {
             services.AddTransient<IAreaBuilder, AreaBuilder>();
         }

@@ -72,53 +72,19 @@ namespace Storage.WebApi.Controllers.Products
         /// </summary>
         /// <returns>ProductCategoryDTO</returns>
         [HttpPost]
-        public override async Task<ActionResult> Post([FromBody] ProductCategoryDTO value)
-        {
-            if (value is null)
-                return BadRequest();
-
-            ProductCategoryDTO outVal;
-            ProductCategory result;
-
-            try
-            {
-                result = await _pcRepo.AddAsync(new ProductCategory() { Id = 0, Name = value.Name });
-                await Uw.Commit();
-            }
-            catch (Exception ex)
-            {
-                Logger.LogError(ex.Message, ex);
-                return BadRequest();
-            }
-
-            outVal = Mapper.Map<ProductCategoryDTO>(result);
-            return CreatedAtAction(nameof(Get), outVal);
-        }
+        public override async Task<ActionResult> Post([FromBody] ProductCategoryDTO value) =>
+            await BaseControllerOperations.BasicPost(value, 
+                async () => await _pcRepo.AddAsync(new ProductCategory() { Id = 0, Name = value.Name }), 
+                nameof(Get));
 
         // PUT api/<Categories>/5
         /// <summary>
         /// Updating Category with ID
         /// </summary>
         [HttpPut("{id}")]
-        public override async Task<ActionResult> Put(int id, [FromBody] ProductCategoryDTO value)
-        {
-            try
-            {
-                await _pcRepo.UpdateAsync(new ProductCategory() { Id = id, Name = value.Name });
-                await Uw.Commit();
-            }
-            catch (NotFound<ProductCategory> ex)
-            {
-                return NotFound();
-            }
-            catch (Exception ex)
-            {
-                Logger.LogError(ex.Message, ex);
-                return BadRequest();
-            }
-
-            return Ok();
-        }
+        public override async Task<ActionResult> Put(int id, [FromBody] ProductCategoryDTO value) =>
+            await BaseControllerOperations.BasicPut(() => 
+            _pcRepo.UpdateAsync(new ProductCategory() { Id = id, Name = value.Name }));
 
         // DELETE api/<Categories>/5
         /// <summary>
@@ -126,29 +92,7 @@ namespace Storage.WebApi.Controllers.Products
         ///  There must be no products in the category before deletion
         /// </summary>
         [HttpDelete("{id}")]
-        public override async Task<ActionResult> Delete(int id)
-        {
-            try
-            {
-                await _pcRepo.DeleteAsync(new ProductCategory() { Id = id });
-                await Uw.Commit();
-            }
-            catch (NoCascadeDeletionException<ProductCategory> ex)
-            {
-                return Conflict(ex.Message);
-            }
-            catch (NotFound<ProductCategory> ex)
-            {
-                return NotFound(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                Logger.LogError(ex, ex.Message);
-
-                return StatusCode(500);
-            }
-
-            return Ok();
-        }
+        public override async Task<ActionResult> Delete(int id) =>
+            await BaseControllerOperations.BasicDelete(() => _pcRepo.DeleteAsync(new ProductCategory() { Id = id }));
     }
 }

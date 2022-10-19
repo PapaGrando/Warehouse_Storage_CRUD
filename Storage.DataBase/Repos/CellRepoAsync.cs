@@ -23,12 +23,12 @@ namespace Storage.DataBase.Repos
 
         public override async Task<IList<Cell>> GetSelectedAsync(QuerySettings query)
         {
-            var pQuery = query as QuerySettingsWithIdParameter;
+            var pQuery = query as QuerySettingsWithIdSubArea;
 
             if (pQuery is null)
                 return await base.GetSelectedAsync(query);
 
-            return await _context.Cells.Where(x => x.SubAreaId == pQuery.IdParam)
+            return await _context.Cells.Where(x => x.SubAreaId == pQuery.IdSubArea)
                 .Skip(query.Offset)
                 .Take(pQuery.PageSize)
                 .ToListAsync();

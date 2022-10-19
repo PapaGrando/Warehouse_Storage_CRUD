@@ -35,7 +35,7 @@ namespace Storage.WebApi.DTO
 
     public class ProductDTOInfoReadOnly : IBaseDTO
     {
-        public int Id { get; init; }
+        public int Id { get; set; }
 
         [Required]
         [StringLength(50)]
@@ -70,7 +70,7 @@ namespace Storage.WebApi.DTO
 
     public class ProductDTOItemInfoReadOnly : IBaseDTO
     {
-        public int Id { get; init; }
+        public int Id { get; set; }
 
         [Required]
         [StringLength(50)]

@@ -8,7 +8,7 @@ using Storage.WebApi.DTO;
 
 namespace Storage.WebApi.Controllers.Products
 {
-    [Route("api/Products/Items")]
+    [Route("api/Products")]
     [ApiController]
     public class ProductsController : StorageBaseController<ProductDTO, ProductsController>
     {
@@ -62,28 +62,10 @@ namespace Storage.WebApi.Controllers.Products
         /// </summary>
         /// <returns>ProductCategoryDTO</returns>
         [HttpPost]
-        public override async Task<ActionResult> Post([FromBody] ProductDTO value)
-        {
-            if (value is null)
-                return BadRequest();
-
-            ProductDTO outVal;
-            Product result;
-
-            try
-            {
-                result = await _pRepo.AddAsync(new Product() { Id = 0, Name = value.Name });
-                await Uw.Commit();
-            }
-            catch (Exception ex)
-            {
-                Logger.LogError(ex.Message, ex);
-                return BadRequest();
-            }
-
-            outVal = Mapper.Map<ProductDTO>(result);
-            return CreatedAtAction(nameof(Get), outVal);
-        }
+        public override async Task<ActionResult> Post([FromBody] ProductDTO value) =>
+            await BaseControllerOperations.BasicPost(value,
+                async () => await _pRepo.AddAsync(new Product() { Id = 0, Name = value.Name }), 
+                nameof(Get));
 
         /// <summary>
         /// Updating Product with ID
@@ -92,22 +74,7 @@ namespace Storage.WebApi.Controllers.Products
         public override async Task<ActionResult> Put(int id, [FromBody] ProductDTO value)
         {
             value.Id = id;
-            try
-            {
-                await _pRepo.UpdateAsync(Mapper.Map<Product>(value));
-                await Uw.Commit();
-            }
-            catch (NotFound<Product> ex)
-            {
-                return NotFound();
-            }
-            catch (Exception ex)
-            {
-                Logger.LogError(ex.Message, ex);
-                return BadRequest();
-            }
-
-            return Ok();
+            return await BaseControllerOperations.BasicPut(() => _pRepo.UpdateAsync(Mapper.Map<Product>(value)));
         }
 
         /// <summary>
@@ -115,29 +82,7 @@ namespace Storage.WebApi.Controllers.Products
         ///  There must be no products in the category before deletion
         /// </summary>
         [HttpDelete("{id}")]
-        public override async Task<ActionResult> Delete(int id)
-        {
-            try
-            {
-                await _pRepo.DeleteAsync(new Product() { Id = id });
-                await Uw.Commit();
-            }
-            catch (NoCascadeDeletionException<Product> ex)
-            {
-                return Conflict(ex.Message);
-            }
-            catch (NotFound<Product> ex)
-            {
-                return NotFound(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                Logger.LogError(ex, ex.Message);
-
-                return StatusCode(500);
-            }
-
-            return Ok();
-        }
+        public override async Task<ActionResult> Delete(int id) =>
+           await BaseControllerOperations.BasicDelete(() => _pRepo.DeleteAsync(new Product() { Id = id }));
     }
 }

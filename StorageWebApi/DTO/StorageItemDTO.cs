@@ -12,7 +12,7 @@ namespace Storage.WebApi.DTO
 
     public class StorageItemDTOInfoReadOnly : IBaseDTO
     {
-        public int Id { get; init; }
+        public int Id { get; set; }
         public ProductDTOItemInfoReadOnly Product { get; init; }
         public CellDTOShortInfoReadOnly Cell { get; init; }
         public DateTime AddTime { get; set; }

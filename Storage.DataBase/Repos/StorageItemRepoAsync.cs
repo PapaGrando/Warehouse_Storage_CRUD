@@ -17,8 +17,6 @@ namespace Storage.DataBase.Repos
             _context = context;
         }
 
-
-
         public override async Task<StorageItem> GetByIdAsync(int id) =>
             await _context.AllItems
                 .Include(x => x.Product)

@@ -14,7 +14,7 @@ namespace Storage.WebApi.DTO
 
     public class AreaDTOInfoReadOnly : IBaseDTO
     {
-        public int Id { get; init; }
+        public int Id { get; set; }
 
         [Required]
         [MaxLength(15)]

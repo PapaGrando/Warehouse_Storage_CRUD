@@ -37,7 +37,7 @@ namespace Storage.DataBase.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Areas");
+                    b.ToTable("Areas", (string)null);
                 });
 
             modelBuilder.Entity("Storage.Core.Models.Storage.Cell", b =>
@@ -64,7 +64,7 @@ namespace Storage.DataBase.Migrations
 
                     b.HasIndex("SubAreaId");
 
-                    b.ToTable("Cells");
+                    b.ToTable("Cells", (string)null);
                 });
 
             modelBuilder.Entity("Storage.Core.Models.Storage.CellType", b =>
@@ -97,7 +97,7 @@ namespace Storage.DataBase.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("CellTypes");
+                    b.ToTable("CellTypes", (string)null);
                 });
 
             modelBuilder.Entity("Storage.Core.Models.Storage.Product", b =>
@@ -139,7 +139,7 @@ namespace Storage.DataBase.Migrations
 
                     b.HasIndex("ProductCategoryId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("Storage.Core.Models.Storage.ProductCategory", b =>
@@ -160,7 +160,7 @@ namespace Storage.DataBase.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("ProductCategories");
+                    b.ToTable("ProductCategories", (string)null);
                 });
 
             modelBuilder.Entity("Storage.Core.Models.Storage.StorageItem", b =>
@@ -186,7 +186,7 @@ namespace Storage.DataBase.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("AllItems");
+                    b.ToTable("AllItems", (string)null);
                 });
 
             modelBuilder.Entity("Storage.Core.Models.Storage.SubArea", b =>
@@ -218,7 +218,7 @@ namespace Storage.DataBase.Migrations
 
                     b.HasIndex("CellTypeId");
 
-                    b.ToTable("SubAreas");
+                    b.ToTable("SubAreas", (string)null);
                 });
 
             modelBuilder.Entity("Storage.Core.Models.Storage.Cell", b =>

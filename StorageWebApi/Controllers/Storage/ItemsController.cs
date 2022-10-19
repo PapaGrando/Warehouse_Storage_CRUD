@@ -52,84 +52,20 @@ namespace Storage.WebApi.Controllers.Storage
         }
 
         [HttpPost]
-        public override async Task<ActionResult> Post([FromBody] StorageItemDTO value)
-        {
-            if (value is null)
-                return BadRequest();
-
-            StorageItemDTO outVal;
-            StorageItem result;
-
-            try
-            {
-                result = await _sr.AddAsync(Mapper.Map<StorageItem>(value));
-                await Uw.Commit();
-            }
-            catch (StorageItemDoesNotFitInCell ex)
-            {
-                return Conflict(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                Logger.LogError(ex.Message, ex);
-                return BadRequest();
-            }
-
-            outVal = Mapper.Map<StorageItemDTO>(result);
-            return Ok(outVal);
-        }
+        public override async Task<ActionResult> Post([FromBody] StorageItemDTO value) =>
+            await BaseControllerOperations.BasicPost(value, 
+                async () => await _sr.AddAsync(Mapper.Map<StorageItem>(value)), 
+                nameof(Get));
 
         [HttpPut("{id}")]
         public override async Task<ActionResult> Put(int id, [FromBody] StorageItemDTO value)
         {
             value.Id = id;
-            try
-            {
-                await _sr.UpdateAsync(Mapper.Map<StorageItem>(value));
-                await Uw.Commit();
-            }
-            catch (NotFound<StorageItem> ex)
-            {
-                return NotFound();
-            }
-            catch (StorageItemDoesNotFitInCell ex)
-            {
-                return Conflict(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                Logger.LogError(ex.Message, ex);
-                return BadRequest();
-            }
-
-            return Ok();
+            return await BaseControllerOperations.BasicPut(() => _sr.UpdateAsync(Mapper.Map<StorageItem>(value)));
         }
 
         [HttpDelete("{id}")]
-        public override async Task<ActionResult> Delete(int id)
-        {
-            try
-            {
-                await _sr.DeleteAsync(new StorageItem() { Id = id });
-                await Uw.Commit();
-            }
-            catch (NoCascadeDeletionException<Product> ex)
-            {
-                return Conflict(ex.Message);
-            }
-            catch (NotFound<Product> ex)
-            {
-                return NotFound(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                Logger.LogError(ex, ex.Message);
-
-                return StatusCode(500);
-            }
-
-            return Ok();
-        }
-
+        public override async Task<ActionResult> Delete(int id) =>
+            await BaseControllerOperations.BasicDelete(() => _sr.DeleteAsync(new StorageItem() { Id = id }));
     }
 }

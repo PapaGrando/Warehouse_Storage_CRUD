@@ -59,12 +59,9 @@ namespace Storage.WebApi.Controllers
             }).ToArray();
         }
 
-        /// <summary>
-        /// idParam - subqueryId
-        /// </summary>
         [HttpGet]
         public async Task<IEnumerable<CellDTOInfoReadOnly>>
-            GetListWithParameters([FromQuery] QuerySettingsWithIdParameter query)
+            GetListWithParameters([FromQuery] QuerySettingsWithIdSubArea query)
         {
             var result = await _cr.GetSelectedAsync(query);
 

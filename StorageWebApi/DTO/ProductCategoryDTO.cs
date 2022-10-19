@@ -15,7 +15,7 @@ namespace Storage.WebApi.DTO
 
     public class ProductCategoryInfoReadOnly : IBaseDTO
     {
-        public int Id { get; init; }
+        public int Id { get; set; }
         public string Name { get; init; }
 
         public int ProductsCount

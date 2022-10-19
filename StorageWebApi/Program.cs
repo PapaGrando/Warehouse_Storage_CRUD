@@ -14,7 +14,7 @@ builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddLogging();
 
 builder.Services.AddRepoServices();
-builder.Services.AddBuilders();
+builder.Services.AddStorageServises();
 
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen(c =>
@@ -35,17 +35,15 @@ if (app.Environment.IsDevelopment())
 else
 {
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
+   // app.UseHsts();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller}/{action=Index}/{id?}");
+app.MapControllers();
 
 app.MapFallbackToFile("index.html"); ;
 

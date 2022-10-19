@@ -2,7 +2,7 @@
 {
     public class CellDTOInfoReadOnly : IBaseDTO
     {
-        public int Id { get; init; }
+        public int Id { get; set; }
         public string Name { get => $"{SubAreaId}||{SubAreaLengthX}-{SubAreaHeigthZ}-{SubAreaWidthY}"; }
         public int SubAreaId { get; init; }
         //Расположение ячейки в SubArea
@@ -17,7 +17,7 @@
     {
         public int Id { get; set; }
         public string Name { get => $"{SubAreaId}||{SubAreaLengthX}-{SubAreaHeigthZ}-{SubAreaWidthY}"; }
-        public int SubAreaId { get; set; }
+        public int SubAreaId { get; init; }
         //Расположение ячейки в SubArea
         public int SubAreaLengthX { get; init; }
         public int SubAreaWidthY { get; init; }

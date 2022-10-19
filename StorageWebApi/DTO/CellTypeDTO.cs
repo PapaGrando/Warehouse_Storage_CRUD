@@ -29,7 +29,7 @@ namespace Storage.WebApi.DTO
 
     public class CellTypeReadOnlyInfoDTO : IBaseDTO
     {
-        public int Id { get; init; }
+        public int Id { get; set; }
 
         [Required]
         [StringLength(25)]

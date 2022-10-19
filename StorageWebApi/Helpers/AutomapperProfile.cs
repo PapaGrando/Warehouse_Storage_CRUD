@@ -16,6 +16,7 @@ namespace Storage.WebApi.Helpers
                     .Select(x => new StorageItemDTO() { Id = x.Id, ProductId = x.ProductId, CellId = x.CellId ?? 0, AddTime = x.AddTime })));
 
             CreateMap<Product, ProductDTOItemInfoReadOnly>();
+            CreateMap<ProductDTO, Product>();
             CreateMap<StorageItem, StorageItemDTO>();
             CreateMap<StorageItemDTO, StorageItem>();
             CreateMap<StorageItem, StorageItemDTOInfoReadOnly>();
@@ -27,6 +28,7 @@ namespace Storage.WebApi.Helpers
             CreateMap<Cell, CellDTOInfoReadOnly>();
             CreateMap<Cell, CellDTOShortInfoReadOnly>();
             CreateMap<Area, AreaDTO>();
+            CreateMap<AreaDTO, Area>();
         }
     }
 }

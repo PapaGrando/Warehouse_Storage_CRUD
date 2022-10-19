@@ -11,8 +11,8 @@ namespace Storage.Core.Models
         public int PageSize { get; set; }
     }
 
-    public class QuerySettingsWithIdParameter : QuerySettings
+    public class QuerySettingsWithIdSubArea : QuerySettings
     {
-        public int IdParam { get; set; }
+        public int IdSubArea { get; set; }
     }
 }

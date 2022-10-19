@@ -14,7 +14,7 @@ namespace Storage.WebApi.Controllers.Storage
     [ApiController]
     public class CellTypesController : StorageBaseController<CellTypeDTO, CellTypesController>
     {
-        private ICellTypeRepoAsync _sr => Uw.CellTypes;
+        private ICellTypeRepoAsync _cr => Uw.CellTypes;
 
         public CellTypesController(IUnitOfWorkAsync uw, ILogger<CellTypesController> logger, IMapper mapper)
             : base(uw, logger, mapper) { }
@@ -22,7 +22,7 @@ namespace Storage.WebApi.Controllers.Storage
         [HttpGet("all")]
         public async override Task<IEnumerable<CellTypeDTO>> GetAll()
         {
-            var data = await _sr.GetAllAsync();
+            var data = await _cr.GetAllAsync();
 
             return data.Select(x => Mapper.Map<CellTypeDTO>(x)).ToArray();
         }
@@ -30,7 +30,7 @@ namespace Storage.WebApi.Controllers.Storage
         [HttpGet]
         public async override Task<IEnumerable<CellTypeDTO>> GetListWithParameters([FromQuery] QuerySettings query)
         {
-            var result = await _sr.GetSelectedAsync(query);
+            var result = await _cr.GetSelectedAsync(query);
 
             return result.Select(x => Mapper.Map<CellTypeDTO>(x)).ToArray();
         }
@@ -38,7 +38,7 @@ namespace Storage.WebApi.Controllers.Storage
         [HttpGet("{id}")]
         public async override Task<ActionResult<object>> Get(int id)
         {
-            var result = await _sr.GetByIdAsync(id);
+            var result = await _cr.GetByIdAsync(id);
 
             if (result is null)
                 return NotFound();
@@ -56,73 +56,27 @@ namespace Storage.WebApi.Controllers.Storage
         }
 
         [HttpPost]
-        public async override Task<ActionResult> Post([FromBody] CellTypeDTO value)
-        {
-            if (value is null)
-                return BadRequest();
+        public async override Task<ActionResult> Post([FromBody] CellTypeDTO value) =>
+            await BaseControllerOperations.BasicPost(
+                value, 
+                async () => await _cr.AddAsync(Mapper.Map<CellType>(value)),
+                nameof(Get));
 
-            value.Id = 0;
-            CellTypeDTO outVal;
-            CellType result;
-
-            try
-            {
-                result = await _sr.AddAsync(Mapper.Map<CellType>(value));
-                await Uw.Commit();
-            }
-            catch (Exception ex)
-            {
-                Logger.LogError(ex.Message, ex);
-                return BadRequest();
-            }
-
-            outVal = Mapper.Map<CellTypeDTO>(result);
-            return CreatedAtAction(nameof(Get), outVal);
-        }
         [HttpPut("{id}")]
-        public async override Task<ActionResult> Put(int id, [FromBody] CellTypeDTO value)
-        {
-            value.Id = id;
-            try
+        public async override Task<ActionResult> Put(int id, [FromBody] CellTypeDTO value) =>
+            await BaseControllerOperations.BasicPut(() =>
             {
-                await _sr.UpdateAsync(Mapper.Map<CellType>(value));
-                await Uw.Commit();
-            }
-            catch (NotFound<CellType> ex)
-            {
-                return NotFound();
-            }
-            catch (Exception ex)
-            {
-                Logger.LogError(ex.Message, ex);
-                return BadRequest();
-            }
-            return Ok();
-        }
+                value.Id = id;
+                return _cr.UpdateAsync(Mapper.Map<CellType>(value));
+            });
+
+        /// <summary>
+        /// Deleting celltype with id. Must be cleared from products
+        /// </summary>
+        /// <param name="id">id of cell type</param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
-        public async override Task<ActionResult> Delete(int id)
-        {
-            try
-            {
-                await _sr.DeleteAsync(new CellType() { Id = id });
-                await Uw.Commit();
-            }
-            catch (NoCascadeDeletionException<ProductCategory> ex)
-            {
-                return Conflict(ex.Message);
-            }
-            catch (NotFound<ProductCategory> ex)
-            {
-                return NotFound(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                Logger.LogError(ex, ex.Message);
-
-                return StatusCode(500);
-            }
-
-            return Ok();
-        }
+        public async override Task<ActionResult> Delete(int id) =>
+            await BaseControllerOperations.BasicDelete(() => _cr.DeleteAsync(new CellType() { Id = id }));
     }
 }
