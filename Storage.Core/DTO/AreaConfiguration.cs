@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Storage.Core.DTO
+namespace Storage.Core.Interfaces
 {
     public class AreaConfiguration
     {

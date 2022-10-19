@@ -54,12 +54,33 @@ namespace Storage.DataBase.Repos
         /// returns ALL entities.  
         /// Use with care and wisely (Or call GetSelectedAsync)
         /// </summary>
-        public virtual async Task<IList<T>> GetAllAsync() =>
-            await _context.Set<T>().ToListAsync();
+        public virtual async Task<EntityListRepoData<T>> GetAllAsync()
+        {
+            var data = await _context.Set<T>().ToListAsync();
 
-        public virtual async Task<IList<T>> GetSelectedAsync(QuerySettings query) =>
-            await _context.Set<T>().Skip(query.Offset).Take(query.PageSize).ToListAsync();
+            return new EntityListRepoData<T>()
+            {
+                Entities = data,
+                CountInList = data.Count,
+                TotalCount = data.Count
+            };
+        }
+            
 
+        public virtual async Task<EntityListRepoData<T>> GetSelectedAsync(QuerySettings query)
+        {
+            var totalCounts = await _context.Set<T>().CountAsync();
+            var data = await _context.Set<T>().Skip((query.PageNo - 1) * query.PageSize)
+                                   .Take(query.PageSize).ToListAsync();
+
+            return new EntityListRepoData<T>()
+            {
+                Entities = data,
+                TotalCount = totalCounts,
+                CountInList = data.Count
+            };
+        }
+            
         protected virtual bool IsExisting(T entity)
         {
             _logger.LogInformation($"entity checking existing");

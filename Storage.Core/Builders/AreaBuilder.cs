@@ -1,4 +1,4 @@
-﻿using Storage.Core.DTO;
+﻿using Storage.Core.Interfaces;
 using Storage.Core.Interfaces;
 using Storage.Core.Models.Storage;
 

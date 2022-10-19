@@ -17,21 +17,46 @@ namespace Storage.DataBase.Repos
             _context = context;
         }
 
-        public async Task<IList<Cell>> GetAllInSubAreaAsync(int subAreaId) =>
-            await _context.Cells.Where(x => x.SubAreaId == subAreaId)
+        public async override Task<Cell> GetByIdAsync(int id) =>
+            await _context.Cells
+                .Include(x => x.SubArea).ThenInclude(x => x.CellType)
+                .Include(x => x.Items).ThenInclude(x => x.Product)
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+        public async Task<EntityListRepoData<Cell>> GetAllInSubAreaAsync(int subAreaId)
+        {
+            var data = await _context.Cells.Include(x => x.Items).Where(x => x.SubAreaId == subAreaId)
                 .ToListAsync();
 
-        public override async Task<IList<Cell>> GetSelectedAsync(QuerySettings query)
+            return new EntityListRepoData<Cell>()
+            {
+                Entities = data,
+                TotalCount = data.Count,
+                CountInList = data.Count
+            };
+        }
+
+        public override async Task<EntityListRepoData<Cell>> GetSelectedAsync(QuerySettings query)
         {
             var pQuery = query as QuerySettingsWithIdSubArea;
 
             if (pQuery is null)
                 return await base.GetSelectedAsync(query);
 
-            return await _context.Cells.Where(x => x.SubAreaId == pQuery.IdSubArea)
-                .Skip(query.Offset)
+            var totalCounts = await _context.Cells
+                .Where(x => x.SubAreaId == pQuery.IdSubArea).CountAsync();
+
+            var data = await _context.Cells.Include(x => x.Items).Where(x => x.SubAreaId == pQuery.IdSubArea)
+                .Skip((query.PageNo - 1) * query.PageSize)
                 .Take(pQuery.PageSize)
                 .ToListAsync();
+
+            return new EntityListRepoData<Cell>()
+            {
+                Entities = data,
+                TotalCount = totalCounts,
+                CountInList = data.Count
+            };
         }
     }
 }

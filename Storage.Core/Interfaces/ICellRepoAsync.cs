@@ -1,8 +1,9 @@
-﻿using Storage.Core.Models.Storage;
+﻿using Storage.Core.Interfaces;
+using Storage.Core.Models.Storage;
 namespace Storage.Core.Interfaces
 {
     public interface ICellRepoAsync : IBaseRepoAsync<Cell> 
     {
-        Task<IList<Cell>> GetAllInSubAreaAsync(int subAreaId);
+        Task<EntityListRepoData<Cell>> GetAllInSubAreaAsync(int subAreaId);
     }
 }

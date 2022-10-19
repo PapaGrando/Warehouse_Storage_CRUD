@@ -1,7 +1,7 @@
 ﻿using Storage.Core.Models.Storage;
 using System.ComponentModel.DataAnnotations;
 
-namespace Storage.Core.DTO
+namespace Storage.Core.Interfaces
 {
     public class SubAreaConfiguration
     {
