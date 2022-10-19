@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Storage.Core.Models.Storage;
-using Storage.WebApi.DTO;
+using Storage.Core.Interfaces;
 
-namespace Storage.WebApi.Helpers
+namespace Storage.Core.Helpers
 {
     public class AutomapperProfile : Profile
     {
@@ -29,6 +29,10 @@ namespace Storage.WebApi.Helpers
             CreateMap<Cell, CellDTOShortInfoReadOnly>();
             CreateMap<Area, AreaDTO>();
             CreateMap<AreaDTO, Area>();
+
+            CreateMap<Cell, CellDTODetailedReadOnly>();
+            CreateMap<SubArea, SubAreaDTOShortInfo>();
+            CreateMap<StorageItem, StorageItemCellDetailedInfoReadOnly>();
         }
     }
 }

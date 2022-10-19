@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Storage.WebApi.DTO
+namespace Storage.Core.Interfaces
 {
     public class AreaDTO : IBaseDTO
     {

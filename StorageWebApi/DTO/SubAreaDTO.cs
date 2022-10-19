@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Storage.WebApi.DTO
+namespace Storage.Core.Interfaces
 {
     public class SubAreaDTOReadOnlyInfo
     {
@@ -17,5 +17,20 @@ namespace Storage.WebApi.DTO
         public int CellTypeId { get; init; }
         public CellTypeDTO CellType { get; init; }
         public IEnumerable<CellDTOInfoReadOnly> Cells { get; init; }
+    }
+
+    public class SubAreaDTOShortInfo
+    {
+        public int Id { get; set; }
+
+        [Range(1, int.MaxValue)]
+        public int HeightCells { get; init; }
+        [Range(1, int.MaxValue)]
+        public int LengthCells { get; init; }
+        [Range(1, 2)]
+        public int WidthCells { get; init; }
+        public int AreaId { get; init; }
+        public int CellTypeId { get; init; }
+        public CellTypeDTO CellType { get; init; }
     }
 }

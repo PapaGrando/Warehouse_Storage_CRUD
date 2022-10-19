@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Storage.Core.Interfaces;
 using Storage.DataBase.Exceptions;
-using Storage.WebApi.DTO;
+using WarehouseCRUD.Storage.Helpers;
 
-namespace Storage.WebApi.Helpers
+namespace Storage.Core.Helpers
 {
     public class BaseControllerOperationsStrategy<DTO>
         where DTO : class, IBaseDTO
@@ -24,6 +24,17 @@ namespace Storage.WebApi.Helpers
             Logger = logger;
             Mapper = mapper;
             Controller = controller;
+        }
+
+        public virtual async Task<IEnumerable<DTO>> BasicGetAll<T>(Func<Task<EntityListRepoData<T>>> actionWithRepo)
+        {
+            var data = await actionWithRepo.Invoke();
+
+            Controller.AddHeadersToResponse<ProductCategoryDTO>(
+                (nameof(data.TotalCount), data.TotalCount),
+                (nameof(data.CountInList), data.CountInList));
+
+            return data.Entities?.Select(x => Mapper.Map<DTO>(x)).ToArray();
         }
 
         public virtual async Task<ActionResult> BasicDelete(Func<Task> actionWithRepo)
