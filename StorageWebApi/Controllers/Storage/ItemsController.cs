@@ -81,6 +81,7 @@ namespace Storage.Core.Controllers.Storage
         public override async Task<ActionResult> Put(int id, [FromBody] StorageItemDTO value)
         {
             value.Id = id;
+            value.AddTime = value.AddTime ?? DateTime.Now;
             return await BaseControllerOperations.BasicPut(() => _sr.UpdateAsync(Mapper.Map<StorageItem>(value)));
         }
 

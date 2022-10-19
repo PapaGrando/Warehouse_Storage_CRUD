@@ -24,25 +24,28 @@ namespace Storage.Core.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Get detailed info of cell
+        /// </summary>
+        /// <param name="id">Cell id</param>
+        /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<ActionResult<CellDTOInfoReadOnly>> Get(int id)
+        public async Task<ActionResult<CellDTODetailedReadOnly>> Get(int id)
         {
             var result = await _cr.GetByIdAsync(id);
 
             if (result is null)
                 return NotFound();
 
-            return new CellDTOInfoReadOnly()
-            {
-                Id = result.Id,
-                SubAreaId = result.SubAreaId,
-                SubAreaLengthX = result.SubAreaLengthX,
-                SubAreaWidthY = result.SubAreaWidthY,
-                SubAreaHeigthZ = result.SubAreaHeigthZ,
-                Items = result.Items?.Select(x => _mapper.Map<StorageItemDTO>(x)).ToList()
-            };
+            return _mapper.Map<CellDTODetailedReadOnly>(result);
+
         }
 
+        /// <summary>
+        /// Get detailed info All cells in target SubArea. May be heavy, use wisely
+        /// </summary>
+        /// <param name="subAreaid"> SubArea id</param>
+        /// <returns></returns>
         [HttpGet("all/{subAreaid}")]
         public async Task<IEnumerable<CellDTOInfoReadOnly>> GetAll(int subAreaid)
         {
@@ -59,6 +62,14 @@ namespace Storage.Core.Controllers
             }).ToArray();
         }
 
+        /// <summary>
+        /// Get detailed info cells in target SubArea with query parameters.
+        /// </summary>
+        /// <param name="query">
+        /// PageNo, PageSize - for pagination <br/>
+        /// IdSubArea - subArea id for search
+        /// </param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IEnumerable<CellDTOInfoReadOnly>>
             GetListWithParameters([FromQuery] QuerySettingsWithIdSubArea query)
