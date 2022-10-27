@@ -4,6 +4,7 @@ using Storage.Core.Interfaces;
 using Storage.Core.Models;
 using Storage.Core.Models.Storage;
 using Storage.DataBase.Exceptions;
+using Storage.WebApi.Filters;
 using WarehouseCRUD.Storage.Helpers;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860

@@ -5,6 +5,7 @@ using Storage.Core.Models;
 using Storage.Core.Models.Storage;
 using Storage.DataBase.Exceptions;
 using Storage.Core.Interfaces;
+using Storage.WebApi.Filters;
 
 namespace Storage.Core.Controllers.Products
 {
@@ -23,6 +24,7 @@ namespace Storage.Core.Controllers.Products
         /// </summary>
         /// <returns>ProductCategoryDTO</returns>
         [HttpGet("all")]
+        [ExceptionFilter]
         public override async Task<IEnumerable<ProductDTO>> GetAll() =>
             await BaseControllerOperations.BasicGetAll(async () => await _pRepo.GetAllAsync());
 
@@ -32,6 +34,7 @@ namespace Storage.Core.Controllers.Products
         /// </summary>
         /// <returns>ProductCategoryDTO</returns>
         [HttpGet]
+        [ExceptionFilter]
         public override async Task<IEnumerable<ProductDTO>> GetListWithParameters([FromQuery] QuerySettings query) => 
             await BaseControllerOperations.BasicGetAll(async () => await _pRepo.GetSelectedAsync(query));
 
@@ -40,6 +43,7 @@ namespace Storage.Core.Controllers.Products
         /// </summary>
         /// <returns>ProductCategoryDTO</returns>
         [HttpGet("{id}")]
+        [ExceptionFilter]
         public override async Task<ActionResult<object>> Get(int id)
         {
             var result = await _pRepo.GetByIdAsync(id);
@@ -55,6 +59,7 @@ namespace Storage.Core.Controllers.Products
         /// </summary>
         /// <returns>ProductCategoryDTO</returns>
         [HttpPost]
+        [ExceptionFilter]
         public override async Task<ActionResult> Post([FromBody] ProductDTO value) =>
             await BaseControllerOperations.BasicPost(value,
                 async () => await _pRepo.AddAsync(new Product() { Id = 0, Name = value.Name }), 
@@ -64,6 +69,7 @@ namespace Storage.Core.Controllers.Products
         /// Updating Product with ID
         /// </summary>
         [HttpPut("{id}")]
+        [ExceptionFilter]
         public override async Task<ActionResult> Put(int id, [FromBody] ProductDTO value)
         {
             value.Id = id;
@@ -75,6 +81,7 @@ namespace Storage.Core.Controllers.Products
         ///  There must be no products in the category before deletion
         /// </summary>
         [HttpDelete("{id}")]
+        [ExceptionFilter]
         public override async Task<ActionResult> Delete(int id) =>
            await BaseControllerOperations.BasicDelete(() => _pRepo.DeleteAsync(new Product() { Id = id }));
     }

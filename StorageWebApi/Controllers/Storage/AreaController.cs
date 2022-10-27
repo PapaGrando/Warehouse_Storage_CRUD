@@ -1,12 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Storage.Core.Interfaces;
-using Storage.Core.Interfaces;
 using Storage.Core.Models;
 using Storage.Core.Models.Storage;
 using Storage.DataBase.Exceptions;
-using Storage.Core.Interfaces;
 using Storage.Core.Helpers;
+using Storage.WebApi.Filters;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -42,6 +41,7 @@ namespace Storage.Core.Controllers.Storage
         /// <param name="id">Id of Area</param>
         /// <returns></returns>
         [HttpGet("{id}")]
+        [ExceptionFilter]
         public async Task<ActionResult<AreaDTOInfoReadOnly>> Get(int id)
         {
             var result = await _ar.GetByIdAsync(id);
@@ -64,6 +64,7 @@ namespace Storage.Core.Controllers.Storage
         /// </summary>
         /// <returns></returns>
         [HttpGet("all")]
+        [ExceptionFilter]
         public async Task<IEnumerable<AreaDTO>> GetAll() =>
             await _baseOperations.BasicGetAll(async () => await _ar.GetAllAsync());
 
@@ -71,6 +72,7 @@ namespace Storage.Core.Controllers.Storage
         /// Returning list Areas with parameters
         /// </summary>
         [HttpGet]
+        [ExceptionFilter]
         public async Task<IEnumerable<AreaDTO>> GetListWithParameters([FromQuery] QuerySettings query) =>
             await _baseOperations.BasicGetAll(async () => await _ar.GetSelectedAsync(query));
 
@@ -86,6 +88,7 @@ namespace Storage.Core.Controllers.Storage
         /// </param>
         /// <returns></returns>
         [HttpPost]
+        [ExceptionFilter]
         public async Task<ActionResult> Post([FromBody] AreaConfiguration value)
         {
             var newArea = _areaBuilder
@@ -102,6 +105,7 @@ namespace Storage.Core.Controllers.Storage
         /// </summary>
         /// <param name="id">Area id</param>
         [HttpPut("{id}")]
+        [ExceptionFilter]
         public async Task<ActionResult> Put(int id, [FromBody] AreaDTO value) =>
 
             await _baseOperations.BasicPut(() =>
@@ -113,6 +117,7 @@ namespace Storage.Core.Controllers.Storage
         /// </summary>
 
         [HttpDelete("{id}")]
+        [ExceptionFilter]
         public async Task<ActionResult> Delete(int id) =>
              await _baseOperations.BasicDelete(() => _ar.DeleteAsync(new Area() { Id = id }));
 

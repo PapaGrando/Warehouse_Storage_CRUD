@@ -3,8 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Storage.Core.Interfaces;
 using Storage.Core.Models;
 using Storage.Core.Models.Storage;
-using Storage.DataBase.Exceptions;
-using Storage.Core.Interfaces;
+using Storage.WebApi.Filters;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -23,6 +22,7 @@ namespace Storage.Core.Controllers.Storage
         /// </summary>
         /// <param name="id">StorageItem id</param>
         [HttpGet("{id}")]
+        [ExceptionFilter]
         public override async Task<ActionResult<object>> Get(int id)
         {
             var result = await _sr.GetByIdAsync(id);
@@ -43,6 +43,7 @@ namespace Storage.Core.Controllers.Storage
         /// Returns ALL StorageItems in database. Use wisely
         /// </summary>
         [HttpGet("all")]
+        [ExceptionFilter]
         public override async Task<IEnumerable<StorageItemDTO>> GetAll() =>
             await BaseControllerOperations.BasicGetAll(async () => await _sr.GetAllAsync());
 
@@ -50,6 +51,7 @@ namespace Storage.Core.Controllers.Storage
         /// Returns StorageItems with parameters. Use for pagination. See headers parameters
         /// </summary>
         [HttpGet]
+        [ExceptionFilter]
         public override async Task<IEnumerable<StorageItemDTO>> GetListWithParameters([FromQuery] QuerySettings query) =>
             await BaseControllerOperations.BasicGetAll(async () => await _sr.GetSelectedAsync(query));
 
@@ -61,9 +63,10 @@ namespace Storage.Core.Controllers.Storage
         /// if AddTime is null, ist will be generated on server side
         /// </param>
         [HttpPost]
+        [ExceptionFilter]
         public override async Task<ActionResult> Post([FromBody] StorageItemDTO value)
         {
-            value.AddTime = value.AddTime ?? DateTime.Now;
+            value.AddTime = value.AddTime ?? DateTime.UtcNow;
 
             return await BaseControllerOperations.BasicPost(value,
                             async () => await _sr.AddAsync(Mapper.Map<StorageItem>(value)),
@@ -78,10 +81,11 @@ namespace Storage.Core.Controllers.Storage
         /// </param>
         /// <param name="id">Storage item to change</param>
         [HttpPut("{id}")]
+        [ExceptionFilter]
         public override async Task<ActionResult> Put(int id, [FromBody] StorageItemDTO value)
         {
             value.Id = id;
-            value.AddTime = value.AddTime ?? DateTime.Now;
+            value.AddTime = value.AddTime ?? DateTime.UtcNow;
             return await BaseControllerOperations.BasicPut(() => _sr.UpdateAsync(Mapper.Map<StorageItem>(value)));
         }
 
@@ -89,6 +93,7 @@ namespace Storage.Core.Controllers.Storage
         /// Deletes target StorageItem
         /// </summary>
         [HttpDelete("{id}")]
+        [ExceptionFilter]
         public override async Task<ActionResult> Delete(int id) =>
             await BaseControllerOperations.BasicDelete(() => _sr.DeleteAsync(new StorageItem() { Id = id }));
     }

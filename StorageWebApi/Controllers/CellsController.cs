@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Storage.Core.Interfaces;
 using Storage.Core.Models;
 using Storage.Core.Interfaces;
+using Storage.WebApi.Filters;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -30,6 +31,7 @@ namespace Storage.Core.Controllers
         /// <param name="id">Cell id</param>
         /// <returns></returns>
         [HttpGet("{id}")]
+        [ExceptionFilter]
         public async Task<ActionResult<CellDTODetailedReadOnly>> Get(int id)
         {
             var result = await _cr.GetByIdAsync(id);
@@ -47,6 +49,7 @@ namespace Storage.Core.Controllers
         /// <param name="subAreaid"> SubArea id</param>
         /// <returns></returns>
         [HttpGet("all/{subAreaid}")]
+        [ExceptionFilter]
         public async Task<IEnumerable<CellDTOInfoReadOnly>> GetAll(int subAreaid)
         {
             var data = await _cr.GetAllInSubAreaAsync(subAreaid);
@@ -71,6 +74,7 @@ namespace Storage.Core.Controllers
         /// </param>
         /// <returns></returns>
         [HttpGet]
+        [ExceptionFilter]
         public async Task<IEnumerable<CellDTOInfoReadOnly>>
             GetListWithParameters([FromQuery] QuerySettingsWithIdSubArea query)
         {

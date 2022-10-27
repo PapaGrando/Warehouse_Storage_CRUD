@@ -15,9 +15,9 @@ namespace Storage.Core.Helpers
         protected readonly ControllerBase Controller;
 
         public BaseControllerOperationsStrategy(
-            IUnitOfWorkAsync uw, 
-            ILogger logger, 
-            IMapper mapper, 
+            IUnitOfWorkAsync uw,
+            ILogger logger,
+            IMapper mapper,
             ControllerBase controller)
         {
             Uw = uw;
@@ -39,44 +39,17 @@ namespace Storage.Core.Helpers
 
         public virtual async Task<ActionResult> BasicDelete(Func<Task> actionWithRepo)
         {
-            try
-            {
-                await actionWithRepo.Invoke();
-                await Uw.Commit();
-            }
-            catch (NoCascadeDeletionException<DTO> ex)
-            {
-                return Controller.Conflict(ex.Message);
-            }
-            catch (NotFound<DTO> ex)
-            {
-                return Controller.NotFound(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                Logger.LogError(ex, ex.Message);
-
-                return Controller.StatusCode(500);
-            }
+            await actionWithRepo.Invoke();
+            await Uw.Commit();
 
             return Controller.Ok();
         }
         public virtual async Task<ActionResult> BasicPut(Func<Task> actionWithRepo)
         {
-            try
-            {
-                await actionWithRepo.Invoke();
-                await Uw.Commit();
-            }
-            catch (NotFound<DTO> ex)
-            {
-                return Controller.NotFound();
-            }
-            catch (Exception ex)
-            {
-                Logger.LogError(ex.Message, ex);
-                return Controller.StatusCode(500);
-            }
+
+            await actionWithRepo.Invoke();
+            await Uw.Commit();
+
             return Controller.Ok();
         }
 
@@ -90,28 +63,20 @@ namespace Storage.Core.Helpers
             DTO outVal;
             object result;
 
-            try
-            {
-                result = await actionWithRepo.Invoke();
-                await Uw.Commit();
-            }
-            catch (Exception ex)
-            {
-                Logger.LogError(ex.Message, ex);
-                return Controller.BadRequest();
-            }
+            result = await actionWithRepo.Invoke();
+            await Uw.Commit();
 
             try
             {
                 outVal = Mapper.Map<DTO>(result);
 
                 //TODO :пофиксить роутинг CreatedAtAction к методу GET
-                return Controller.Created(createdAtActionMethodName, outVal); 
+                return Controller.Created(createdAtActionMethodName, outVal);
             }
             catch
             {
                 return Controller.Ok("created, automapper DTO parse error");
-            }  
+            }
         }
     }
 }
