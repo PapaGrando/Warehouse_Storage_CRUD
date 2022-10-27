@@ -1,9 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Storage.Core.Interfaces;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Storage.Core.Models.Storage
 {
-    public class StorageItem
+    public class StorageItem : IBaseModel
     {
         [Key]
         public int Id { get; set; }
@@ -16,8 +17,6 @@ namespace Storage.Core.Models.Storage
         [ForeignKey("CellId")]
         public Cell Cell { get; set; }
 
-        public int? StateId { get; set; }
-        [ForeignKey("StateId")]
-        public StorageItemState State { get; set; }
+        public DateTime AddTime { get; set; }
     }
 }

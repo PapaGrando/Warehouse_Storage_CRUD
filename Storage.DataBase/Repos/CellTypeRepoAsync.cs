@@ -1,4 +1,5 @@
-﻿using Storage.Core.Interfaces;
+﻿using Microsoft.Extensions.Logging;
+using Storage.Core.Interfaces;
 using Storage.Core.Models.Storage;
 using Storage.DataBase.DataContext;
 
@@ -8,13 +9,10 @@ namespace Storage.DataBase.Repos
     {
         private StorageDbContext _context;
 
-        public CellTypeRepoAsync(StorageDbContext context) : base(context)
+        public CellTypeRepoAsync(StorageDbContext context, ILogger<CellTypeRepoAsync> logger)
+            : base(context, logger)
         {
             _context = context;
         }
-
-        public async Task<bool> IsCountainsCellsOfTypes(int id) =>
-            await Task.FromResult(_context.Cells.Any(x => x.CellTypeId == id));
-
     }
 }

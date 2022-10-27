@@ -3,13 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31912.275
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WarehouseCRUD.Storage", "WarehouseCRUD\WarehouseCRUD.Storage.csproj", "{42CB723B-071C-4A16-9B6F-76F758F0988E}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WarehouseCRUD.Storage.Tests", "Storage.Tests\WarehouseCRUD.Storage.Tests.csproj", "{943DA694-4D1E-4971-AD85-0D83059064E4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Storage.Core", "Storage.Core\Storage.Core.csproj", "{6A9B95CE-0CAF-496E-A744-E447EE9F6609}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Storage.Core", "Storage.Core\Storage.Core.csproj", "{6A9B95CE-0CAF-496E-A744-E447EE9F6609}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Storage.DataBase", "Storage.DataBase\Storage.DataBase.csproj", "{CDC43AA6-618E-446E-B1D8-E154635A6139}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Storage.DataBase", "Storage.DataBase\Storage.DataBase.csproj", "{CDC43AA6-618E-446E-B1D8-E154635A6139}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Storage.WebApi", "StorageWebApi\Storage.WebApi.csproj", "{1806A74F-E5FE-4647-B12B-49AF4FCDFC15}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6A9B95CE-0CAF-496E-A744-E447EE9F6609} = {6A9B95CE-0CAF-496E-A744-E447EE9F6609}
+		{CDC43AA6-618E-446E-B1D8-E154635A6139} = {CDC43AA6-618E-446E-B1D8-E154635A6139}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +21,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{42CB723B-071C-4A16-9B6F-76F758F0988E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{42CB723B-071C-4A16-9B6F-76F758F0988E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{42CB723B-071C-4A16-9B6F-76F758F0988E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{42CB723B-071C-4A16-9B6F-76F758F0988E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{943DA694-4D1E-4971-AD85-0D83059064E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{943DA694-4D1E-4971-AD85-0D83059064E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{943DA694-4D1E-4971-AD85-0D83059064E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -33,6 +33,10 @@ Global
 		{CDC43AA6-618E-446E-B1D8-E154635A6139}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CDC43AA6-618E-446E-B1D8-E154635A6139}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CDC43AA6-618E-446E-B1D8-E154635A6139}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1806A74F-E5FE-4647-B12B-49AF4FCDFC15}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1806A74F-E5FE-4647-B12B-49AF4FCDFC15}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1806A74F-E5FE-4647-B12B-49AF4FCDFC15}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1806A74F-E5FE-4647-B12B-49AF4FCDFC15}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

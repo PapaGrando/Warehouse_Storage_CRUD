@@ -21,22 +21,22 @@ namespace Storage.DataBase.Repos
         public UnitOfWork(StorageDbContext context,
             ILogger<UnitOfWork> logger,
             IAreaRepoAsync areas,
-            //ISubAreasRepoAsync subAreas,
-            //ICellRepoAsync cells,
-            //ICellTypeRepoAsync cellTypes,
-            //IProductRepoAsync products,
-            IProductCategoryRepoAsync productCategories)
-            //IStorageItemRepoAsync storageItems)
+            ISubAreasRepoAsync subAreas,
+            ICellRepoAsync cells,
+            IProductRepoAsync products,
+            ICellTypeRepoAsync cellTypes,
+            IProductCategoryRepoAsync productCategories,
+            IStorageItemRepoAsync storageItems)
         {
             _context = context;
             _logger = logger;
             Areas = areas;
-            //SubAreas = subAreas;
-            //Cells = cells;
-           // CellTypes = cellTypes;
-            //Products = products;
+            SubAreas = subAreas;
+            Cells = cells;
+            CellTypes = cellTypes;
+            Products = products;
             ProductCategories = productCategories;
-            //StorageItems = storageItems;
+            StorageItems = storageItems;
         }
 
         public async Task Commit()
@@ -64,7 +64,6 @@ namespace Storage.DataBase.Repos
                 _logger.LogInformation($"disposing {nameof(UnitOfWork)}");
                 _context.Dispose();
             }
-
 
             disposedValue = true;
         }

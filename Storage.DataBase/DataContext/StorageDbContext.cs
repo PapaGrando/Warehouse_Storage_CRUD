@@ -1,8 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.Extensions.Logging;
-using Storage.Core.Interfaces;
-using Storage.Core.Models;
 using Storage.Core.Models.Storage;
 
 namespace Storage.DataBase.DataContext
@@ -33,13 +31,13 @@ namespace Storage.DataBase.DataContext
         public DbSet<SubArea> SubAreas { get; init; }
         public DbSet<Cell> Cells { get; init; }
         public DbSet<CellType> CellTypes { get; init; }
-        public DbSet<StorageItemState> ItemsState { get; init; }
+        public DbSet<StoredFunctionsResults> StoredFunctionsResults { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) =>
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(CellTypeEntityConfiguration).Assembly);
     }
 
-#region EntityConfiguration
+    #region EntityConfiguration
     public class CellTypeEntityConfiguration : IEntityTypeConfiguration<CellType>
     {
         public void Configure(EntityTypeBuilder<CellType> builder)
@@ -49,6 +47,7 @@ namespace Storage.DataBase.DataContext
                 .IsUnique();
         }
     }
+
     public class ProductCategoryEntityConfiguration : IEntityTypeConfiguration<ProductCategory>
     {
         public void Configure(EntityTypeBuilder<ProductCategory> builder)
@@ -63,24 +62,13 @@ namespace Storage.DataBase.DataContext
         public void Configure(EntityTypeBuilder<Cell> builder)
         {
             builder
-                .HasOne(p => p.CellType)
-                .WithMany(v => v.Cells)
-                .HasForeignKey(x => x.CellTypeId);
-
-            builder
                 .HasOne(p => p.SubArea)
                 .WithMany(v => v.Cells)
                 .HasForeignKey(x => x.SubAreaId);
 
-            builder
-                .HasOne(p => p.Area)
-                .WithMany(v => v.Cells)
-                .HasForeignKey(x => x.AreaId);
-
-            builder.Property(x => x.SubAreaLenghtX);
-            builder.Property(x => x.SubAreaHeightY);
-            builder.Property(x => x.SubAreaWidthZ);
-
+            builder.Property(x => x.SubAreaLengthX);
+            builder.Property(x => x.SubAreaHeigthZ);
+            builder.Property(x => x.SubAreaWidthY);
         }
     }
     public class ProductEntityConfiguration : IEntityTypeConfiguration<Product>
@@ -101,6 +89,11 @@ namespace Storage.DataBase.DataContext
                 .HasOne(p => p.Area)
                 .WithMany(v => v.SubAreas)
                 .HasForeignKey(x => x.AreaId);
+
+            builder
+                .HasOne(p => p.CellType)
+                .WithMany(v => v.SubAreas)
+                .HasForeignKey(x => x.CellTypeId);
         }
     }
     public class StorageItemEntityConfiguration : IEntityTypeConfiguration<StorageItem>
@@ -116,12 +109,12 @@ namespace Storage.DataBase.DataContext
                 .HasOne(p => p.Cell)
                 .WithMany(p => p.Items)
                 .HasForeignKey(x => x.CellId);
-
-            builder
-                .HasOne(p => p.State)
-                .WithMany(v => v.Items)
-                .HasForeignKey(x => x.StateId);
         }
     }
-#endregion
+    #endregion
+    [Keyless]
+    public class StoredFunctionsResults
+    {
+        public bool storageitem_can_insert_in_cell { get; set; }
+    }
 }
