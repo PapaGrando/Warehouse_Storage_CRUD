@@ -27,7 +27,7 @@ namespace Storage.DataBase.Repos
             _logger.LogInformation("Checking for cascade deletion...");
 
             if (_context.Products.Any(x => x.ProductCategoryId == category.Id))
-                throw new NoCascadeDeletionException<ProductCategory>();
+                throw new NoCascadeDeletionException();
 
             return base.DeleteAsync(category);         
         }

@@ -31,7 +31,7 @@ namespace Storage.DataBase.Repos
         public virtual Task UpdateAsync(T entity)
         {
             if (!IsExisting(entity))
-                throw new NotFound<T>(entity.Id);
+                throw new NotFound(entity.Id, typeof(T).Name);
 
             _context.Entry(entity).State = EntityState.Modified;
             _logger.LogInformation($"entity state changed");
@@ -42,7 +42,7 @@ namespace Storage.DataBase.Repos
         public virtual Task DeleteAsync(T entity)
         {
             if (!IsExisting(entity))
-                throw new NotFound<T>(entity.Id);
+                throw new NotFound(entity.Id, typeof(T).Name);
 
             _context.Set<T>().Remove(entity);
             _logger.LogInformation($"entity removed");

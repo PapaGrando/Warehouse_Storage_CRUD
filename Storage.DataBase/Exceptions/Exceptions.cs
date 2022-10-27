@@ -11,16 +11,16 @@
         }
     }
 
-    public class NoCascadeDeletionException<T> : BaseDataException
+    public class NoCascadeDeletionException : BaseDataException
     {
-        public NoCascadeDeletionException(string message = null)
-            : base(message ?? $"Not allowed cascade deleting for {typeof(T).Name} entity") { }
+        public NoCascadeDeletionException(string typeData = null, string message = null)
+            : base(message ?? $"Not allowed cascade deleting for {typeData ?? "type not setted"} entity") { }
     }
 
-    public class NotFound<T> : BaseDataException
+    public class NotFound : BaseDataException
     {
-        public NotFound(int? id)
-            : base($"Record {typeof(T).Name} with id: {id} not found.") { }
+        public NotFound(int? id, string typeData)
+            : base($"Record {typeData} with id: {id} not found.") { }
     }
 
     public class StorageItemDoesNotFitInCell : BaseDataException

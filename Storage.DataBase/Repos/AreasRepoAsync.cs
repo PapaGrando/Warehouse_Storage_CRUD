@@ -53,7 +53,7 @@ namespace Storage.DataBase.Repos
                 .Any();
 
             if (result)
-                throw new NoCascadeDeletionException<Area>(
+                throw new NoCascadeDeletionException(
                     $"Area with id = {entity.Id} contains StorageItems, " +
                     $"but must be clear. Replace or delete all items in this Area.");
 
