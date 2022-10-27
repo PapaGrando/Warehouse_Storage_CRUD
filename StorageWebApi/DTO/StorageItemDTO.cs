@@ -1,6 +1,4 @@
-﻿using Storage.Core.Models.Storage;
-
-namespace Storage.Core.Interfaces
+﻿namespace Storage.Core.Interfaces
 {
     public class StorageItemDTO : IBaseDTO
     {

@@ -1,11 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
 using Storage.Core.Builders;
 using Storage.Core.Interfaces;
-using Storage.Core.Interfaces;
-using Storage.DataBase.Exceptions;
 using Storage.DataBase.Repos;
-using Storage.Core.Helpers;
 
 namespace WarehouseCRUD.Storage.Helpers
 {
@@ -37,7 +33,7 @@ namespace WarehouseCRUD.Storage.Helpers
         internal static void AddHeadersToResponse<T>(this ControllerBase controller,
             params (string name, object value)[] parameters)
         {
-            foreach(var p in parameters)
+            foreach (var p in parameters)
 
                 controller.ControllerContext.HttpContext.Response.Headers
                     .Add($"x-{typeof(T).Name}-{p.name}", p.value.ToString());

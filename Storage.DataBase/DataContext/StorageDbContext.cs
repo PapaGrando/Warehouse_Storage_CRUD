@@ -1,10 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.Extensions.Logging;
-using Storage.Core.Interfaces;
-using Storage.Core.Models;
 using Storage.Core.Models.Storage;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Storage.DataBase.DataContext
 {
@@ -40,7 +37,7 @@ namespace Storage.DataBase.DataContext
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(CellTypeEntityConfiguration).Assembly);
     }
 
-#region EntityConfiguration
+    #region EntityConfiguration
     public class CellTypeEntityConfiguration : IEntityTypeConfiguration<CellType>
     {
         public void Configure(EntityTypeBuilder<CellType> builder)

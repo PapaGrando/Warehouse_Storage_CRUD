@@ -1,9 +1,9 @@
-﻿using Storage.Core.Interfaces;
-using Storage.DataBase.DataContext;
-using Microsoft.EntityFrameworkCore;
-using Storage.Core.Models.Storage;
-using Storage.DataBase.Exceptions;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Storage.Core.Interfaces;
+using Storage.Core.Models.Storage;
+using Storage.DataBase.DataContext;
+using Storage.DataBase.Exceptions;
 
 namespace Storage.DataBase.Repos
 {
@@ -29,7 +29,7 @@ namespace Storage.DataBase.Repos
             if (_context.Products.Any(x => x.ProductCategoryId == category.Id))
                 throw new NoCascadeDeletionException();
 
-            return base.DeleteAsync(category);         
+            return base.DeleteAsync(category);
         }
     }
 }

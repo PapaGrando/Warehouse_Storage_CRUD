@@ -3,14 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using Storage.Core.Interfaces;
 using Storage.Core.Models;
 using Storage.Core.Models.Storage;
-using Storage.DataBase.Exceptions;
 using Storage.WebApi.Filters;
-using WarehouseCRUD.Storage.Helpers;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Storage.Core.Controllers.Products
 {
+    [ExceptionFilter]
     [Route("api/Products/[controller]")]
     [ApiController]
     public class CategoriesController : StorageBaseController<ProductCategoryDTO, CategoriesController>
@@ -67,8 +64,8 @@ namespace Storage.Core.Controllers.Products
         /// <returns>ProductCategoryDTO</returns>
         [HttpPost]
         public override async Task<ActionResult> Post([FromBody] ProductCategoryDTO value) =>
-            await BaseControllerOperations.BasicPost(value, 
-                async () => await _pcRepo.AddAsync(new ProductCategory() { Id = 0, Name = value.Name }), 
+            await BaseControllerOperations.BasicPost(value,
+                async () => await _pcRepo.AddAsync(new ProductCategory() { Id = 0, Name = value.Name }),
                 nameof(Get));
 
         // PUT api/<Categories>/5
@@ -77,7 +74,7 @@ namespace Storage.Core.Controllers.Products
         /// </summary>
         [HttpPut("{id}")]
         public override async Task<ActionResult> Put(int id, [FromBody] ProductCategoryDTO value) =>
-            await BaseControllerOperations.BasicPut(() => 
+            await BaseControllerOperations.BasicPut(() =>
             _pcRepo.UpdateAsync(new ProductCategory() { Id = id, Name = value.Name }));
 
         // DELETE api/<Categories>/5

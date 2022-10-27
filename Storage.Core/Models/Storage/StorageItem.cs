@@ -17,6 +17,6 @@ namespace Storage.Core.Models.Storage
         [ForeignKey("CellId")]
         public Cell Cell { get; set; }
 
-        public DateTime AddTime { get; set; }   
+        public DateTime AddTime { get; set; }
     }
 }

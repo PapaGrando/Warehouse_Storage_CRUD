@@ -9,7 +9,7 @@ namespace Storage.DataBase.Repos
     {
         private StorageDbContext _context;
 
-        public CellTypeRepoAsync(StorageDbContext context, ILogger<CellTypeRepoAsync> logger) 
+        public CellTypeRepoAsync(StorageDbContext context, ILogger<CellTypeRepoAsync> logger)
             : base(context, logger)
         {
             _context = context;

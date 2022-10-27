@@ -48,7 +48,7 @@ namespace Storage.DataBase.Repos
 
             if (result == null)
                 result = new StoredFunctionsResults() { storageitem_can_insert_in_cell = false };
-                
+
             return result.storageitem_can_insert_in_cell;
         }
     }

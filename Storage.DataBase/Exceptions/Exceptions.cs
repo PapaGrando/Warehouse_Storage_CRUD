@@ -27,6 +27,7 @@
     {
         public StorageItemDoesNotFitInCell(int? idCell, int? idProd)
             : base($"Current Item of prodId: {idProd} cant fit in cell with id: {idCell}. " +
-                  $"Item is so big or not enough free space") { }
+                  $"Item is so big or not enough free space")
+        { }
     }
 }

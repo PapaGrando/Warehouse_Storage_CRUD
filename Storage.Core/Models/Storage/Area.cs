@@ -1,5 +1,4 @@
 ﻿using Storage.Core.Interfaces;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Storage.Core.Models.Storage

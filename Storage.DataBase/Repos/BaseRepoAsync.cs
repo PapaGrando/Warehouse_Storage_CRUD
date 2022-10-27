@@ -65,7 +65,7 @@ namespace Storage.DataBase.Repos
                 TotalCount = data.Count
             };
         }
-            
+
 
         public virtual async Task<EntityListRepoData<T>> GetSelectedAsync(QuerySettings query)
         {
@@ -80,7 +80,7 @@ namespace Storage.DataBase.Repos
                 CountInList = data.Count
             };
         }
-            
+
         protected virtual bool IsExisting(T entity)
         {
             _logger.LogInformation($"entity checking existing");

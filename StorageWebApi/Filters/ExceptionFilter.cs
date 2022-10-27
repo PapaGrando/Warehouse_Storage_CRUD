@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Storage.DataBase.Exceptions;
-using System;
 
 namespace Storage.WebApi.Filters
 {

@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Storage.Core.Interfaces;
-using Storage.DataBase.Exceptions;
 using WarehouseCRUD.Storage.Helpers;
 
 namespace Storage.Core.Helpers

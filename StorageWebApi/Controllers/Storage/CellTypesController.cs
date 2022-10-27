@@ -3,14 +3,13 @@ using Microsoft.AspNetCore.Mvc;
 using Storage.Core.Interfaces;
 using Storage.Core.Models;
 using Storage.Core.Models.Storage;
-using Storage.DataBase.Exceptions;
 using Storage.WebApi.Filters;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Storage.Core.Controllers.Storage
 {
-
+    [ExceptionFilter]
     [Route("api/Storage/[controller]")]
     [ApiController]
     public class CellTypesController : StorageBaseController<CellTypeDTO, CellTypesController>
@@ -25,7 +24,6 @@ namespace Storage.Core.Controllers.Storage
         /// </summary>
         /// <returns></returns>
         [HttpGet("all")]
-        [ExceptionFilter]
         public async override Task<IEnumerable<CellTypeDTO>> GetAll() =>
              await BaseControllerOperations.BasicGetAll(async () => await _cr.GetAllAsync());
 
@@ -33,8 +31,7 @@ namespace Storage.Core.Controllers.Storage
         /// Returns list of celltypes with setted parameters in query
         /// </summary>
         [HttpGet]
-        [ExceptionFilter]
-        public async override Task<IEnumerable<CellTypeDTO>> GetListWithParameters([FromQuery] QuerySettings query)=> 
+        public async override Task<IEnumerable<CellTypeDTO>> GetListWithParameters([FromQuery] QuerySettings query) =>
             await BaseControllerOperations.BasicGetAll(async () => await _cr.GetSelectedAsync(query));
 
         /// <summary>
@@ -42,7 +39,6 @@ namespace Storage.Core.Controllers.Storage
         /// </summary>
         /// <param name="id">id of cell type</param>
         [HttpGet("{id}")]
-        [ExceptionFilter]
         public async override Task<ActionResult<object>> Get(int id)
         {
             var result = await _cr.GetByIdAsync(id);
@@ -67,10 +63,9 @@ namespace Storage.Core.Controllers.Storage
         /// </summary>
         /// <param name="value">Data to create</param>
         [HttpPost]
-        [ExceptionFilter]
         public async override Task<ActionResult> Post([FromBody] CellTypeDTO value) =>
             await BaseControllerOperations.BasicPost(
-                value, 
+                value,
                 async () => await _cr.AddAsync(Mapper.Map<CellType>(value)),
                 nameof(Get));
 
@@ -80,7 +75,6 @@ namespace Storage.Core.Controllers.Storage
         /// <param name="id">id of cell type</param>
         /// <param name="value">Data to change</param>
         [HttpPut("{id}")]
-        [ExceptionFilter]
         public async override Task<ActionResult> Put(int id, [FromBody] CellTypeDTO value) =>
             await BaseControllerOperations.BasicPut(() =>
             {
@@ -93,7 +87,6 @@ namespace Storage.Core.Controllers.Storage
         /// </summary>
         /// <param name="id">id of cell type</param>
         [HttpDelete("{id}")]
-        [ExceptionFilter]
         public async override Task<ActionResult> Delete(int id) =>
             await BaseControllerOperations.BasicDelete(() => _cr.DeleteAsync(new CellType() { Id = id }));
     }
