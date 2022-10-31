@@ -23,6 +23,31 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="ClientApp\**" />
+	  <Content Remove="ClientApp\**" />
+	  <EmbeddedResource Remove="ClientApp\**" />
+	  <None Remove="ClientApp\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Remove="data\swagger-desc.txt" />
+	  <None Remove="docker-compose.yml" />
+	  <None Remove="dockerfile" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Include="data\swagger-desc.txt">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Content>
+	  <Content Include="docker-compose.yml">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </Content>
+	  <Content Include="dockerfile">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </Content>
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="AutoMapper" Version="12.0.0" />
 		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
 		<PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.9" />
@@ -73,6 +98,11 @@
 	<ItemGroup>
 		<ProjectReference Include="..\Storage.Core\Storage.Core.csproj" />
 		<ProjectReference Include="..\Storage.DataBase\Storage.DataBase.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Resource Include="data\swagger-desc.txt">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Resource>
 	</ItemGroup>
 
 	<ItemGroup>

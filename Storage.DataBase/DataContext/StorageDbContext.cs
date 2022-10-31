@@ -10,8 +10,9 @@ namespace Storage.DataBase.DataContext
         private readonly ILogger _logger;
 
         public StorageDbContext(DbContextOptions<StorageDbContext> opt, ILogger<StorageDbContext> logger) : base(opt)
-        {
+        {   
             _logger = logger;
+            Database.EnsureCreated();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
