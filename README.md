@@ -12,14 +12,6 @@ Powered by
 **You need instaled Docker, .Net 6 SDK**
 <details><summary>How install dev certificates for https</summary>
 <p>
-```
-  dotnet dev-certs https -ep %USERPROFILE%\.aspnet\https\aspnetapp.pfx -p { password here }
-  dotnet dev-certs https --trust
-```
-</p>
-</details>
-<details><summary>How install dev certificates for https</summary>
-<p>
 
 ####   see ```StorageWebApi/docker-compose.yml``` for more info
 
