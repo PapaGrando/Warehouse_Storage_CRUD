@@ -10,7 +10,7 @@ services:
     environment:
       POSTGRES_DB: "Warehouse.Storage"
       POSTGRES_USER: "postgres"
-      POSTGRES_PASSWORD: "KJij56hgtRtr5!"
+      POSTGRES_PASSWORD: "password" # change password for database connect
       PGDATA: /var/lib/postgresql/data/pg_data
     volumes:
       - ../2. Init Database:/docker-entrypoint-initdb.d
@@ -49,7 +49,7 @@ services:
       ASPNETCORE_URLS: https://+:443;http://+:80
       ASPNETCORE_Kestrel__Certificates__Default__Password: password #password from command
       ASPNETCORE_Kestrel__Certificates__Default__Path: /https/aspnetapp.pfx
-      DB_PgConnection: "Host=Storage_db_postgres;Port=5432;Database=Warehouse.Storage;Username=postgres;Password=KJij56hgtRtr5!"
+      DB_PgConnection: "Host=Storage_db_postgres;Port=5432;Database=Warehouse.Storage;Username=postgres;Password=password" # copy password for database connect
     volumes:
       - ~/.aspnet/https:/https:ro
     networks:
