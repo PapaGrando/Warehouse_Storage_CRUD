@@ -1,5 +1,5 @@
 # Warehouse_Storage_CRUD
-Study ASP.NET Core project (FrontEnd in progress) <br/>
+Study ASP.NET Core project, simulates warehouse storage work (FrontEnd in progress) <br/>
 Powered by 
 - .NET 6,
 - PostgreSQL, EF Core,
@@ -9,13 +9,14 @@ Powered by
 - Docker
 
 # How to Run/Test
-**You need instaled Docker, .Net 6 SDK**
+**You need instaled Docker, .Net 6+ SDK**
 <details><summary>How install dev certificates for https</summary>
 <p>
 
 ####   see ```StorageWebApi/docker-compose.yml``` for more info
 
-####  simple way -
+####   You can use certificates of Letsencrypt - https://letsencrypt.org/
+####   or via more simple way -
 
 ```
   dotnet dev-certs https -ep %USERPROFILE%\.aspnet\https\aspnetapp.pfx -p { password here }
@@ -27,7 +28,7 @@ Powered by
 
  - Clone project
  - ```cd /StorageWebApi```
- - ```dotnet publish -c Release```
+ - ```dotnet publish -c Debug``` - in Release swagger disabled
  - ```cd bin\Release\net6.0\publish\pub```
  - ```docker-compose up```
  
