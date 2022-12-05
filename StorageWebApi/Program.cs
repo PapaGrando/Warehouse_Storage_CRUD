@@ -32,8 +32,6 @@ builder.Services.AddSwaggerGen(c =>
     c.IncludeXmlComments(xmlPath);
 });
 
-builder.Services.AddResponseCompression(opt => opt.EnableForHttps = true);
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -46,8 +44,6 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
-
-app.UseResponseCompression();
 
 app.MapControllers();
 

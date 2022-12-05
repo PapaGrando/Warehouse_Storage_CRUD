@@ -12,7 +12,6 @@ namespace Storage.DataBase.DataContext
         public StorageDbContext(DbContextOptions<StorageDbContext> opt, ILogger<StorageDbContext> logger) : base(opt)
         {   
             _logger = logger;
-
             Database.EnsureCreated();
         }
 
