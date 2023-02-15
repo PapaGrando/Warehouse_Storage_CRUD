@@ -1,0 +1,58 @@
+﻿-- FUNCTION: public.storageitem_can_insert_in_cell(integer, integer, integer)
+
+-- DROP FUNCTION IF EXISTS public.storageitem_can_insert_in_cell(integer, integer, integer);
+
+CREATE OR REPLACE FUNCTION public.storageitem_can_insert_in_cell(
+	cell_id integer,
+	prod_id_to_insert_id integer,
+	storage_item_id integer DEFAULT NULL::integer)
+    RETURNS boolean
+    LANGUAGE 'sql'
+    COST 1000
+    VOLATILE PARALLEL UNSAFE
+AS $BODY$
+	--Search target cell an getting it parameters
+	WITH cell_params as (
+		SELECT 
+		"Width" * "Length" as square,
+		"Width" as wth, 
+		"Length" as l, 
+		"MaxWeight" as w,
+		"Height" as h 
+		FROM "CellTypes" as ct JOIN 
+			(SELECT "CellTypeId" FROM "SubAreas" 
+			 JOIN (SELECT "SubAreaId" FROM "Cells" WHERE "Id" = cell_id LIMIT 1) as celldata on "Id" = "SubAreaId" LIMIT 1) 
+			 as sa_data 
+		ON "Id" = "CellTypeId"),
+	
+	--Search product with id and taking it parameters
+	prod_params AS (
+		SELECT 
+		"Width" * "Length" as squareUsed, 
+		"Width" as width, 
+		"Length" as length, 
+		"Weight" as weigth, 
+		"Height" as heigth
+		FROM "Products" WHERE "Id" = prod_id_to_insert_id LIMIT 1),
+		
+	--Search all products in target cell and calculating all busy space
+	busy_in_cell AS (
+		SELECT SUM("Width" * "Length") as squareUsed , 
+		SUM("Weight") as sum_weigth, 
+		Max("Height") as heigth
+		FROM "Products" as prod JOIN 
+		(SELECT "ProductId" FROM "AllItems" WHERE "CellId" = cell_id AND "Id" != storage_item_id) AS pi 
+		ON prod."Id" = pi."ProductId")
+	
+	--Check for inserting product
+   SELECT NOT EXISTS (SELECT FROM busy_in_cell, cell_params, prod_params
+    WHERE NOT(
+	(prod_params.width < cell_params.wth) AND
+	(prod_params.length < cell_params.l) AND
+	(prod_params.heigth < cell_params.h) AND
+	((busy_in_cell.squareUsed + prod_params.squareUsed) < cell_params.square) AND
+	((busy_in_cell.sum_weigth + prod_params.weigth) < cell_params.w)));
+$BODY$;
+
+ALTER FUNCTION public.storageitem_can_insert_in_cell(integer, integer, integer)
+    OWNER TO postgres;
