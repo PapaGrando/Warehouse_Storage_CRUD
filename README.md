@@ -28,7 +28,7 @@ Powered by
 
  - Clone project
  - ```cd /StorageWebApi```
- - ```dotnet publish -c Release```
+ - ```dotnet publish -c Release -f net6.0```
  - ```cd bin\Release\net6.0\publish\```
  - ```docker-compose up```
  
