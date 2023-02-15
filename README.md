@@ -28,8 +28,8 @@ Powered by
 
  - Clone project
  - ```cd /StorageWebApi```
- - ```dotnet publish -c Debug``` - in Release swagger disabled
- - ```cd bin\Release\net6.0\publish\pub```
+ - ```dotnet publish -c Release```
+ - ```cd bin\Release\net6.0\publish\```
  - ```docker-compose up```
  
  Open browser - ```localhost:5001/swagger``` and you should see:
