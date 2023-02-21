@@ -24,7 +24,7 @@ namespace Storage.DataBase.Repos
         /// <exception cref="NoCascadeDeletionException"></exception>
         public override Task DeleteAsync(ProductCategory category)
         {
-            _logger.LogInformation("Checking for cascade deletion...");
+            _logger.LogInformation("Checking for cascade deletion allowing...");
 
             if (_context.Products.Any(x => x.ProductCategoryId == category.Id))
                 throw new NoCascadeDeletionException();
