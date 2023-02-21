@@ -14,7 +14,7 @@
     public class NoCascadeDeletionException : BaseDataException
     {
         public NoCascadeDeletionException(string typeData = null, string message = null)
-            : base(message ?? $"Not allowed cascade deleting for {typeData ?? "type not setted"} entity") { }
+            : base(message ?? $"Not allowed cascade deleting for {typeData ?? "Unknown type"} entity") { }
     }
 
     public class NotFound : BaseDataException
@@ -26,7 +26,7 @@
     public class StorageItemDoesNotFitInCell : BaseDataException
     {
         public StorageItemDoesNotFitInCell(int? idCell, int? idProd)
-            : base($"Current Item of prodId: {idProd} cant fit in cell with id: {idCell}. " +
+            : base($"Current Item of prodId: {idProd} has cant fit in cell with id: {idCell}. " +
                   $"Item is so big or not enough free space")
         { }
     }

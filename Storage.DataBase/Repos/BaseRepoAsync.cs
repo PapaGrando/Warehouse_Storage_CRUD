@@ -83,7 +83,7 @@ namespace Storage.DataBase.Repos
 
         protected virtual bool IsExisting(T entity)
         {
-            _logger.LogInformation($"entity checking existing");
+            _logger.LogInformation($"entity existing checking ");
 
             return _context.Set<T>().Any(x => x.Id == entity.Id);
         }
